@@ -1,0 +1,147 @@
+div.sidebar{
+    width: 15%;
+    float: left;
+    background-color: rgba(230,230,230,0.25);
+    height: 100%;
+    border: rgba(210,210,210,0.25) solid 5px;
+
+}
+
+div.top{
+    width: 80%;
+    position: relative;
+    left: 10%;
+}
+
+div.body{
+    width: 80%;
+    position: relative;
+    left: 10%;
+}
+
+div.content{
+    width:85%;
+    position: absolute;
+    left: 15%;
+}
+
+div>a{
+    display: block;
+    width:95px;
+    height: 20px;
+    background: rgba(109,158,235,0.13);
+    padding-left: 15px;
+    margin-left: 15px;
+    margin-bottom: -8px;
+    border-top: 0px;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+    text-align: left;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 240px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding-left: 6px;
+    text-align: left;
+    z-index:500;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.collection{
+
+    width: 120px;
+    background-color: rgba(109,158,235,0.13);
+    font-size: large;
+    color: rgba(146,97,20);
+    height: 35px;
+    padding-left: 15px;
+    padding-top: 5px;
+}
+
+.head_text{
+    font-size: 20px;
+    font-family: 文泉驿正黑;
+}
+
+.indexbox{
+    font-size: 25px;
+    border-radius: 15px;
+    background-color: rgba(116, 255, 245, 0.23);
+    margin: 5% 8% 5% 8%;
+    height:100px;
+    text-align: center;
+    line-height: 100px;
+    font-weight: bold;
+}
+
+.cal_cell{
+    height:80px;
+    border: rgba(118, 214, 211, 0.4) solid 1px;
+    border-radius: 10px;
+}
+
+.cal_cell_readonly{
+    height:80px;
+    border: rgba(118, 214, 211, 0.4) solid 1px;
+    border-radius: 10px;
+    background-color: rgba(219,219,219,0.36);
+}
+
+.cal_cell:hover{
+    background-color: rgba(255,238,167,0.23);
+}
+.cal_left_cell{
+    display: inline-block;
+    width: 30%;
+    text-align: center;
+    font-family: monospace;
+    font-size: 30px;
+}
+.cal_left_cell_weekend{
+    display: inline-block;
+    width: 30%;
+    color: #ffd178;
+    text-align: center;
+    font-family: monospace;
+    font-size: 30px;
+}
+
+.cal_right_call{
+    display: inline-block;
+    padding-top: 5%;
+    padding-left: 15%;
+    width:70%;
+}
+
+.cal_right_cell_outrange{
+    display: inline-block;
+    width: 70%;
+    height: 80px;
+}
+
+.cal_left_cell_outrange{
+    display: inline-block;
+    width: 30%;
+    height: 80px;
+    text-align: center;
+    font-family: monospace;
+    font-size: 30px;
+}
+
+.cal_radio{
+    display: block;
+    padding: 1px;
+}
+
+div.cal_right_cell_outrange ul{
+    margin: 5px;
+    padding: 0 15%;
+}
