@@ -1,0 +1,41 @@
+{% extends 'attendance_base.html' %}
+{% block script %}<script src="{{static_url('js/cal.js')}}"></script>{% end %}
+{% block content %}
+<div  style="width: 100%;">
+    <table width="100%">
+        <tr>
+            <td class="head_text">
+                开始日期：
+            </td>
+            <td>
+                <input class="ui date input" type="date" name="start_date" id="start_date" min='2018-06-01' max="2030-09-30" value="">
+            </td>
+            <td class="head_text">
+                结束日期：
+            </td>
+            <td>
+                <input class="ui date input" type="date" name="end_date" id="end_date" min='2018-06-30' max="2019-06-30" value="">
+            </td>
+            <td>
+                <button class="ui green button" style="margin-left: 25px;height: 30px;padding-top: 7px" onclick=date_selected()>选定日期</button>
+            </td>
+            <td>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</td>
+            <td>
+                <button onclick=shortcut(-1) class="ui blue button" style="height: 30px;padding-top: 7px">上月</button>
+            </td>
+            <td>
+                <button onclick=shortcut(0) class="ui blue button" style="height: 30px;padding-top: 7px">本月</button>
+            </td>
+            <td>
+                <button onclick=shortcut(1) class="ui blue button" style="height: 30px;padding-top: 7px">下月</button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div>
+    <form method="post" id="workday">
+
+    </form>
+</div>
+{% end %}

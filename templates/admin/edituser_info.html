@@ -1,0 +1,61 @@
+{% extends "admin_base.html" %}
+{% block script %}
+<script>
+    function dopost(URL, PARAMS) {
+    var temp = document.createElement("form");
+    temp.action = URL;
+    temp.method = "post";
+    temp.style.display = "none";
+    var opt = document.createElement("input");
+    opt.name = 'delete';
+    opt.value = PARAMS;
+    temp.appendChild(opt);
+    document.body.appendChild(temp);
+    temp.submit();
+    return temp
+}
+</script>
+{% end %}
+{% block content %}
+<table class="ui celled table">
+    <tr align="center"><td colspan="4" align="center" width="100%"><h2>修改用户</h2></td></tr>
+    <tr>
+        <th class="negative">
+            &ensp;&ensp;工号
+        </th>
+        <th class="negative">
+            &ensp;&ensp;角色
+        </th>
+        <th class="negative">
+            &ensp;&ensp;&ensp;&ensp;可访问的URL
+        </th>
+        <th class="negative">
+            &ensp;&ensp;&ensp;&ensp;操作
+        </th>
+    </tr>
+
+    {% for user in user_info %}
+    <tr>
+        <form>
+            <td width="10%">&ensp;<input type="hidden" value={{user[0]}} name="worker_id">{{user[0]}}</td>
+            <td width="15%">&ensp;
+            <div class="dropdown">
+                {{user[1]}}
+                <div class="dropdown-content">
+                    {% for role in role_list %}
+                    <div>
+                        <input type="checkbox" name='new_role[]' value={{role}} class="ui checkbox">{{role}}
+                    </div>
+                    {% end %}
+                </div>
+            </div>
+            </td>
+            <td style="word-break:break-all">{{user[2]}}</td>
+            <td width="18%">
+                <input type="submit" class="ui red button" value="提交修改">
+            </td>
+        </form>
+    </tr>
+    {% end %}
+</table>
+{% end %}

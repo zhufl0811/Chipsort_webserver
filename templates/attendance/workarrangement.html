@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{static_url('css/semantic.min.css')}}">
+    <script src="{{static_url("js/jquery.js")}}"></script>
+    <script src="{{static_url('js/semantic.min.js')}}"></script>
+    <style type="text/css">div {width:1000px;position:relative;top:55px;margin:0 auto;text-align:center}</style>
+    <title>排班提报</title>
+</head>
+<body>
+<div>
+    <form class="ui form" name="workarrangement" method="post">
+        <h2>排班信息录入</h2>
+        <table width="900px" align="center" class="ui table">
+            <tr>
+                <td width="25%">您的信息：</td><td width="25%">{{name}}（{{worker_id}}）</td>
+                <td width="25%">您的班组：</td><td width="25%">{{dep_job}}</td>
+            </tr>
+            <tr>
+                <td colspan="1">您可以新建分组后排班:</td>
+                <td colspan="3"><input type="button" class="ui secondary button" value="新建分组/重新分组"></td>
+            </tr>
+            <tr>
+                <td colspan="4">或者直接排班:</td>
+            </tr>
+            <tr>{% for worker in dep_job_members %}
+                <td>{{worker.name}}</td>
+            {% end %}</tr>
+        </table>
+        <input type="submit" value="提交" class="ui primary button">
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+{% extends "admin_base.html" %}
+{% block content %}
+<table class="ui celled table">
+    <tr align="center"><td colspan="4" align="center" width="100%"><h2>修改/删除用户</h2></td></tr>
+    <tr>
+        <th class="head_text negative">
+            &ensp;&ensp;工号
+        </th>
+        <th class="head_text negative">
+            &ensp;&ensp;角色
+        </th>
+        <th class="head_text negative">
+            &ensp;&ensp;&ensp;&ensp;可访问的URL
+        </th>
+        <th class="head_text negative">
+            &ensp;&ensp;&ensp;&ensp;操作
+        </th>
+    </tr>
+
+    {% for user in user_info %}
+    <tr>
+        <td width="10%">&ensp;{{user[0]}}</td>
+        <td width="15%">&ensp;{{user[1]}}</td>
+        <td style="word-break:break-all">{{user[2]}}</td>
+        <td width="23%">
+            {% if user[1]!='admin' %}
+            <button class="ui orange button" value={{user[0]}} onclick="location='/admin/edituser?worker_id={{user[0]}}'">
+                &ensp;修改</button>
+            <button class="ui red button" value={{user[0]}} onclick=dopost('/admin/deluser',value)>
+                &ensp;删除</button>
+            {% else %}
+            <button class="ui grey button">
+                &ensp;修改</button>
+            <button class="ui grey button">
+                &ensp;删除</button>
+            {% end %}
+        </td>
+    </tr>
+    {% end %}
+</table>
+{% end %}

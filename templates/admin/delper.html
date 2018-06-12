@@ -1,0 +1,34 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+<table class="ui celled table">
+    <tr><td colspan="3"><h2>删 除 权 限</h2></td></tr>
+    <tr>
+        <th class="negative">
+            &ensp;&ensp;&ensp;&ensp;URL
+        </th>
+        <th class="negative">
+            &ensp;&ensp;&ensp;&ensp;描述
+        </th>
+        <th class="negative">
+            &ensp;&ensp;&ensp;&ensp;操作
+        </th>
+    </tr>
+    {% for key in url_list %}
+    <tr>
+        <td width="40%">
+            &ensp;&ensp;{{key}}
+        </td>
+        <td width="38%">
+            &ensp;&ensp;{{url_list[key]}}
+        </td>
+        <td>
+            <button class="ui orange button" value={{key}} onclick="location='/admin/editper?url={{key}}'">
+                修改</button>
+            <button class="ui red button" value={{key}} onclick=dopost('/admin/delper',value)>
+                删除</button>
+        </td>
+    </tr>
+    {% end %}
+</table>
+{% end %}

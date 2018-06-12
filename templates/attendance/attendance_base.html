@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{static_url('css/mystyle.css')}}">
+    <link rel="stylesheet" href="{{static_url('css/semantic.min.css')}}">
+    <script src="{{static_url("js/jquery.js")}}"></script>
+    <script src="{{static_url('js/semantic.min.js')}}"></script>
+    {% block script %}{% end %}
+    <script src = "{{static_url('js/main.js')}}"></script>
+    <title>考勤系统</title>
+</head>
+<body>
+<div class="top">
+    <table width="100%">
+        <tr>
+            <td rowspan="2" width="15%">
+                <a href="/"><br><img  src="{{static_url("pictures/chipsort_logo.png")}}" height='64px' weight='232px'>
+                    </a>
+            </td>
+            <td height="50%" align="center">
+            <h1 class="head_text" style="font-size: 36px;padding-right: 18%;padding-top:22px;">考 勤 系 统</h1></td>
+        </tr>
+
+        <tr>
+            <td  align="right">{{worker_id}}，您好，<a href="/logout">点我注销</a></td>
+        </tr>
+    </table>
+</div>
+<br>
+<div class="body">
+    {% block content %}
+    {% end %}
+</div>
+</html>

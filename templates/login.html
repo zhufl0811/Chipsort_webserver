@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{static_url('css/semantic.min.css')}}">
+    <script src="{{static_url("js/jquery.js")}}"></script>
+    <script src="{{static_url('js/semantic.min.js')}}"></script>
+    <style type="text/css">div {hight:500px;width:400px;position:relative;
+        top:55px;margin:0 auto;text-align:center}</style>
+    <title>用户登陆</title>
+</head>
+<body style="background:rgba(109,158,235,0.21)">
+<div>
+    <form method="post" name="form_login" id="form_login" class="ui form">
+            <tr><p style="font-weight:bold;font-size:30px">用 户 登 陆</p></tr>
+            <tr><input type="text" name='worker_id' id="worker_id" placeholder="工号"></tr>
+            <br></br>
+            <tr><input type="password" name='psd' id="psd" placeholder="密码"></tr>
+            <br></br>
+            <tr align="center"><td><input type="submit" value="登陆" class="ui primary button"></td>
+            <td><input type="button" href="/register" value="注册" class = 'ui secondary button'></td></tr>
+    </form>
+</div>
+</body>
+</html>

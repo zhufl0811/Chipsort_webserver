@@ -1,0 +1,41 @@
+{% extends "admin_base.html" %}
+{% block content %}
+<table class="ui celled table">
+    <tr align="center"><td colspan="4" align="center" width="100%"><h2>修改/删除角色</h2></td></tr>
+    <tr>
+        <th class="head_text negative">
+            &ensp;&ensp;角色
+        </th>
+        <th class="head_text negative">
+            &ensp;&ensp;用户
+        </th>
+        <th class="head_text negative">
+            &ensp;&ensp;&ensp;&ensp;可访问的URL
+        </th>
+        <th class="head_text negative">
+            &ensp;&ensp;&ensp;&ensp;操作
+        </th>
+    </tr>
+
+    {% for role in role_info %}
+    <tr>
+        <td width="13%" >{{role[0]}}</td>
+        <td width="16%">&ensp;{{role[1]}}</td>
+        <td style="word-break:break-all">{{role[2]}}</td>
+        <td width="23%">
+            {% if role[0]!='admin' %}
+            <button class="ui orange button" value={{role[0]}} onclick="location='/admin/editrole?role_name={{role[0]}}'">
+                &ensp;修改</button>
+            <button class="ui red button" value={{role[0]}} onclick=dopost('/admin/delrole',value)>
+                &ensp;删除</button>
+            {% else %}
+            <button class="ui grey button" value={{role[0]}} >
+                &ensp;修改</button>
+            <button class="ui grey button" value={{role[0]}} >
+                &ensp;删除</button>
+            {% end %}
+        </td>
+    </tr>
+    {% end %}
+</table>
+{% end %}
