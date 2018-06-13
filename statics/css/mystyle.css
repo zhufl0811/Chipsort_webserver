@@ -25,7 +25,7 @@ div.content{
     left: 15%;
 }
 
-div>a{
+a.sidebar_url{
     display: block;
     width:95px;
     height: 20px;
@@ -144,4 +144,16 @@ div>a{
 div.cal_right_cell_outrange ul{
     margin: 5px;
     padding: 0 15%;
+}
+
+div.navbar{
+    width: 80%;
+    position: relative;
+    left: 10%;
+}
+
+.navbar div{
+    display: inline-block;
+    margin-left: 0;
+    margin-right: 0;
 }

@@ -1,16 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{static_url('css/mystyle.css')}}">
-    <link rel="stylesheet" href="{{static_url('css/semantic.min.css')}}">
-    <script src="{{static_url("js/jquery.js")}}"></script>
-    <script src="{{static_url('js/semantic.min.js')}}"></script>
-    <script src = "{{static_url('js/main.js')}}"></script>
-    <title>晶测光电首页</title>
-</head>
-<body>
-<div class="top">
+{% extends 'base.html' %}
+{% block title %}晶测光电首页{% end %}
+{% block top %}
     <table width="100%">
         <tr>
             <td rowspan="2" width="15%">
@@ -25,9 +15,9 @@
             <td  align="right">{{worker_id}}，您好，<a href="/logout">点我注销</a></td>
         </tr>
     </table>
-</div>
-<br>
-<div class="body">
+{% end %}
+
+{% block content %}
     <table style="width: 100%;padding: 5px">
         <tr>
             <td>
@@ -61,5 +51,4 @@
         </tr>
 
     </table>
-</div>
-</html>
+{% end %}
