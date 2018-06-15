@@ -50,9 +50,20 @@ a.sidebar_url{
   padding-left: 6px;
     text-align: left;
     z-index:500;
+    margin-top: -40px;
 }
+
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+.dropdown-content a{
+    display: block;
+    margin-top: -60px;
+    margin-bottom: 80px;
+    margin-left: 10px;
+    padding: 0;
+    height: 15px;
 }
 
 .collection{

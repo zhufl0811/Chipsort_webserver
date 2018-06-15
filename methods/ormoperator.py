@@ -30,13 +30,24 @@ class OrmOperator():
         self.session.close()
     def query_all(self,*args,**kwarg):
         if args:
-            col = args[0]
-            result = []
-            data=self.session.query(getattr(self.table,col)).filter_by(**kwarg).all()
-            for item in data:
-                result.append(item[0])
-            self.session.close()
-            return result
+            if len(args)==1:
+                col = args[0]
+                result = []
+                data = self.session.query(getattr(self.table, col)).filter_by(**kwarg).all()
+                for item in data:
+                    result.append(item[0])
+                self.session.close()
+                return result
+            else:
+                result_dict={}
+                for arg in args:
+                    result = []
+                    data = self.session.query(getattr(self.table, arg)).filter_by(**kwarg).all()
+                    for item in data:
+                        result.append(item[0])
+                    result_dict[arg]=result
+                self.session.close()
+                return result_dict
         else:
             result=self.session.query(self.table).filter_by(**kwarg).all()
             self.session.close()

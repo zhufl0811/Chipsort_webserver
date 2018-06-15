@@ -1,23 +1,31 @@
 import tornado.web
 from handlers.basehandler import BaseHandler
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
-from models import db
-
-engine = create_engine('mysql+pymysql://root:0811@localhost:3306/chipsort?charset=utf8')
-session_class = sessionmaker(bind = engine)  # 实例和engine绑定
-session = session_class()
+from models.info import EmployeeInservice
+from methods.ormoperator import OrmOperator
+import json
 
 class WorkArrangementHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        worker_id = self.get_secure_cookie('worker_id')
-        worker_info=session.query(db.EmployeeInservice).filter_by(worker_id=worker_id).first()
-        name = worker_info.name
-        dep_job = worker_info.dep_job
-        dep_job_members = session.query(db.EmployeeInservice).filter_by(dep_job=dep_job).all()
-        print(len(dep_job_members))
-        self.render('attendance/workarrangement.html',name=name,worker_id=worker_id,dep_job=dep_job,dep_job_members=dep_job_members)
+        worker_id = str(self.get_secure_cookie('worker_id'),encoding = 'utf-8')
+        oo_e=OrmOperator(EmployeeInservice)
+        group_of_thisid = oo_e.query_all('dep_job',worker_id=worker_id)
+        groupmembers = oo_e.query_all('worker_id','name',dep_job=group_of_thisid)
+        dict={}
+        for i in range(len(groupmembers['worker_id'])):
+            dict[groupmembers['worker_id'][i]]=groupmembers['name'][i]
+        push_data={
+            'worker_id':worker_id,
+            'groupmembers':dict
+        }
+        # worker_id=json.dumps(worker_id)
+        self.write(json.dumps(push_data))
+        # worker_info=session.query(db.EmployeeInservice).filter_by(worker_id=worker_id).first()
+        # name = worker_info.name
+        # dep_job = worker_info.dep_job
+        # dep_job_members = session.query(db.EmployeeInservice).filter_by(dep_job=dep_job).all()
+        # print(len(dep_job_members))
+        # self.render('attendance/workarrangement.html',name=name,worker_id=worker_id,dep_job=dep_job,dep_job_members=dep_job_members)
 
     def post(self):
 

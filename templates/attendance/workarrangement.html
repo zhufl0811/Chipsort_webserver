@@ -2,34 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{static_url('css/semantic.min.css')}}">
-    <script src="{{static_url("js/jquery.js")}}"></script>
-    <script src="{{static_url('js/semantic.min.js')}}"></script>
-    <style type="text/css">div {width:1000px;position:relative;top:55px;margin:0 auto;text-align:center}</style>
-    <title>排班提报</title>
+    <link rel="stylesheet" href="../../statics/css/mystyle.css">
+    <link rel="stylesheet" href="../../statics/css/semantic.min.css">
+    <script src="../../statics/js/vue.js"></script>
+    <script src="../../statics/js/jquery.js"></script>
+    <!--<script src="../../statics/js/axios.min.js"></script>-->
+    <script src = "../../statics/js/main.js"></script>
+    <title>排班</title>
 </head>
-<body>
-<div>
-    <form class="ui form" name="workarrangement" method="post">
-        <h2>排班信息录入</h2>
-        <table width="900px" align="center" class="ui table">
-            <tr>
-                <td width="25%">您的信息：</td><td width="25%">{{name}}（{{worker_id}}）</td>
-                <td width="25%">您的班组：</td><td width="25%">{{dep_job}}</td>
-            </tr>
-            <tr>
-                <td colspan="1">您可以新建分组后排班:</td>
-                <td colspan="3"><input type="button" class="ui secondary button" value="新建分组/重新分组"></td>
-            </tr>
-            <tr>
-                <td colspan="4">或者直接排班:</td>
-            </tr>
-            <tr>{% for worker in dep_job_members %}
-                <td>{{worker.name}}</td>
-            {% end %}</tr>
-        </table>
-        <input type="submit" value="提交" class="ui primary button">
-    </form>
+<body onload=navbar()>
+<div class="top">
+    <table width="100%">
+        <tr>
+            <td rowspan="2" width="15%">
+                <a href="/"><br><img  src="../../statics/pictures/chipsort_logo.png" height='64px' weight='232px'>
+                    </a>
+            </td>
+            <td height="50%" align="center">
+            <h1 class="head_text" style="font-size: 36px;padding-right: 18%;padding-top:22px;">考 勤 系 统</h1></td>
+        </tr>
+
+        <tr>
+            <td align="right"><span id="greeting">{{ worker_id }}</span>，您好，<a href="/logout">点我注销</a></td>
+        </tr>
+    </table>
 </div>
-</body>
+<br>
+<div id="navbar" class="navbar">
+
+</div>
+<br>
+<div class="body">
+    <table id="group" style="width: 100%">
+        <tr v-for="i in rows">
+            <td v-for="j in 7">
+                <div v-if='ids[7*(i-1)+j-1]' class="cal_cell">
+                    <div class="cal_left_cell">
+                        <div style="height:40px;line-height:60px;text-align:center;font-size:20px;font-weight: bold;">
+                            {{ids[7*(i-1)+j-1]}}
+                        </div>
+                        <div style="height:40px;line-height:20px;text-align:center;font-size:12px;font-weight: bold;">
+                            {{groupmembers[ids[7*(i-1)+j-1]]}}
+                        </div>
+                    </div>
+                    <div class="cal_right_call">
+
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<script src="../../statics/js/workarrangement.js"></script>
 </html>
