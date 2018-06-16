@@ -52,6 +52,10 @@ class OrmOperator():
             result=self.session.query(self.table).filter_by(**kwarg).all()
             self.session.close()
             return result
+    def query_like(self,columnname,like):
+        like_str = '%'+like+'%'
+        result=self.session.query(self.table).filter(getattr(self.table,columnname).like(like_str)).all()
+        return result
     def delete(self,**kwargs):
         objs = self.session.query(self.table).filter_by(**kwargs).all()
         i=0
@@ -61,7 +65,6 @@ class OrmOperator():
         self.session.commit()
         self.session.close()
         print('表格:%s中的%d行删除成功！'%(self.table.__tablename__,i))
-
     def delete_some_row(self,**kwargs):
         all_keys = list(kwargs.keys())
         dict_list = []
@@ -76,28 +79,10 @@ class OrmOperator():
         self.session.commit()
         self.session.close()
 
-
-
 if __name__=='__main__':
-    from models.attendance import Workday
-    from datetime import date
-    oo_wd = OrmOperator(Workday)
-    date_list=[]
-    mark_list=[]
-    for year in range(2018,2051):
-        for month in range(1,13):
-            for day in range(1,32):
-                try:
-                    new_day = date(year = year,month = month,day = day)
-                    weekday_of_this = new_day.weekday()
-                    if weekday_of_this in [5,6]:
-                        date_list.append(str(year)+'-'+str(month)+'-'+str(day))
-                        mark_list.append(0)
-                    else:
-                        date_list.append(str(year) + '-'+str(month) + '-'+str(day))
-                        mark_list.append(1)
-                except:
-                    break
-    oo_wd.add_some_row(date_record=date_list,mark=mark_list)
+    from models.info import EmployeeInservice
+    oo_e=OrmOperator(EmployeeInservice)
+    d=oo_e.query_like('dep_job','工程')
+    print(d)
 
 

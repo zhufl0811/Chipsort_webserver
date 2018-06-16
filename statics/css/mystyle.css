@@ -168,3 +168,31 @@ div.navbar{
     margin-left: 0;
     margin-right: 0;
 }
+
+div.wa_cell_topleft{
+    height: 40px;
+    line-height: 60px;
+}
+
+div.wa_cell_bottomleft{
+    height: 40px;
+    line-height: 20px;
+}
+
+.wa_cell_left{
+    height: 80px;
+    display: inline-block;
+    width:35%;
+    font-size: 20px;
+}
+
+.wa_cell_right{
+    height: 80px;
+    display: inline-block;
+    width: 35%;
+    font-size: 20px;
+}
+
+.wa_cell_right input{
+    display: block;
+}

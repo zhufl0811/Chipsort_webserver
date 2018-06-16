@@ -1,8 +1,3 @@
-import tornado.web
-
-class TestHandler(tornado.web.RequestHandler):
-    def get(self):
-        self.write('second')
-        self.finish('haha')
-        self.write('fffff')
-        self.finish('haha')
+a=['生产|包装', '生产|经理', '生产|点测', '生产|分选']
+a.remove('生产|经理')
+print(a,type(a),type('生产|经理'))

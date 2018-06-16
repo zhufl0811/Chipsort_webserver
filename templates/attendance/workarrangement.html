@@ -33,25 +33,49 @@
 </div>
 <br>
 <div class="body">
-    <table id="group" style="width: 100%">
-        <tr v-for="i in rows">
-            <td v-for="j in 7">
-                <div v-if='ids[7*(i-1)+j-1]' class="cal_cell">
-                    <div class="cal_left_cell">
-                        <div style="height:40px;line-height:60px;text-align:center;font-size:20px;font-weight: bold;">
-                            {{ids[7*(i-1)+j-1]}}
+    <div id="form_wa">
+        <div v-for="group in group_info">
+            <table width="100%" :name="group.group_name">
+                <tr>
+                    <td colspan="7">
+                        <h2>{{group.group_name}}</h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td><h3>开始日期：</h3></td>
+                    <td><input id="start_date" name="start_date" type="date" /></td>
+                    <td><br></td>
+                    <td><h3>结束日期：</h3></td>
+                    <td><input id="end_date" name="end_date" type="date" /></td>
+                    <td><br></td>
+                    <td><br></td>
+                </tr>
+                <tr v-for="i in Math.ceil((group.group_members).length/7)">
+                    <td v-for="j in 7" width="14%">
+                        <div class="cal_cell" v-if="(7*i+j-8)<(group.group_members).length" >
+                            <div class="cal_left_cell" style="font-size: 12px">
+                                <div style="height: 40px;line-height: 60px;font-size: 18px">
+                                    {{group.group_members[7*i+j-8].id}}
+                                </div>
+                                <div style="height: 40px;line-height: 20px">
+                                    {{group.group_members[7*i+j-8].name}}
+                                </div>
+                            </div>
+                            <div class="cal_right_call" style="width: 65%">
+                                <div class="cal_radio">
+                                    <input type="radio" :name='group.group_members[7*i+j-8].id' value="1" class = 'ui checkbox'>早班1<br>
+                                    <input type="radio" :name='group.group_members[7*i+j-8].id' value="2" class = 'ui checkbox'>早班<br>
+                                    <input type="radio" :name='group.group_members[7*i+j-8].id' value="3" class = 'ui checkbox'>晚班<br>
+                                </div>
+                            </div>
                         </div>
-                        <div style="height:40px;line-height:20px;text-align:center;font-size:12px;font-weight: bold;">
-                            {{groupmembers[ids[7*(i-1)+j-1]]}}
-                        </div>
-                    </div>
-                    <div class="cal_right_call">
-
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </table>
+                    </td>
+                </tr>
+                <tr><td></td></tr>>
+            </table>
+            <br>
+        </div>
+    </div>
 </div>
 <script src="../../statics/js/workarrangement.js"></script>
 </html>

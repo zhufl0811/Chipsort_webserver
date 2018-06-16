@@ -2,6 +2,7 @@ var greeting = new Vue({
     el:'#greeting',
     data:{
         worker_id:''
+
     },
     created:function () {
         this.get_info()
@@ -14,7 +15,9 @@ var greeting = new Vue({
                 dataType:'json',
                 type:'get',
                 success:function (data) {
-                    mv.worker_id=data.worker_id}
+                    mv.worker_id=data.worker_id;
+
+                }
                 })
         }
     }
@@ -22,11 +25,9 @@ var greeting = new Vue({
 
 
 var getgroup = new Vue({
-    el:'#group',
+    el:'#form_wa',
     data:{
-        groupmembers:Object,
-        ids:[],
-        rows:''
+        group_info:''
     },
     created:function () {
         this.get_info()
@@ -39,11 +40,18 @@ var getgroup = new Vue({
                 dataType:'json',
                 type:'get',
                 success:function (data) {
-                    mv.groupmembers=data.groupmembers;
-                    mv.ids=Object.keys(data.groupmembers);
-                    mv.rows=Math.ceil(mv.ids.length/7)
+                    mv.group_info = data.group_info;
                     }
                 });
                 }
     }
     });
+//
+// var submit = new Vue({
+//     el:'#submit_button',
+//     methods:{
+//         submit_work_arrangement:function () {
+//             for
+//         }
+//     }
+// })

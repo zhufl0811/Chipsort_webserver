@@ -1,8 +1,8 @@
 import tornado.web
 from handlers.basehandler import BaseHandler
 from models.info import EmployeeInservice
+from models.attendance import DIYGroupDivide
 from methods.ormoperator import OrmOperator
-import json
 
 class WorkArrangementHandler(BaseHandler):
     @tornado.web.authenticated
@@ -10,42 +10,36 @@ class WorkArrangementHandler(BaseHandler):
         worker_id = str(self.get_secure_cookie('worker_id'),encoding = 'utf-8')
         oo_e=OrmOperator(EmployeeInservice)
         group_of_thisid = oo_e.query_all('dep_job',worker_id=worker_id)
-        groupmembers = oo_e.query_all('worker_id','name',dep_job=group_of_thisid)
-        dict={}
-        for i in range(len(groupmembers['worker_id'])):
-            dict[groupmembers['worker_id'][i]]=groupmembers['name'][i]
-        push_data={
-            'worker_id':worker_id,
-            'groupmembers':dict
+        oo_diy = OrmOperator(DIYGroupDivide)
+        push_data = {
+            'worker_id': worker_id,
+            'group_info':[]
         }
-        # worker_id=json.dumps(worker_id)
-        self.write(json.dumps(push_data))
-        # worker_info=session.query(db.EmployeeInservice).filter_by(worker_id=worker_id).first()
-        # name = worker_info.name
-        # dep_job = worker_info.dep_job
-        # dep_job_members = session.query(db.EmployeeInservice).filter_by(dep_job=dep_job).all()
-        # print(len(dep_job_members))
-        # self.render('attendance/workarrangement.html',name=name,worker_id=worker_id,dep_job=dep_job,dep_job_members=dep_job_members)
+        if group_of_thisid[0][-2:]=='经理':
+            dep = group_of_thisid[0][:2]
+            members_in_this_dep = oo_e.query_like('dep_job',dep)
+            groups_be_operated = list(set([member.dep_job for member in members_in_this_dep]))
+            groups_be_operated.remove(group_of_thisid[0])
+        else:
+            groups_be_operated=group_of_thisid
+
+        for group in groups_be_operated:
+            group_member_info = []
+            members_info = oo_e.query_all('worker_id', 'name', dep_job = group)
+            for i in range(len(members_info['worker_id'])):
+                group_member_info.append({'id': members_info['worker_id'][i], 'name': members_info['name'][i]})
+            diy_info = []
+            group_diy_info = oo_diy.query_all('group_son', 'ids_in_son', operator_id = worker_id, group_parent = group)
+            for j in range(len(group_diy_info['group_son'])):
+                diy_info.append(
+                    {'son_group_name': group_diy_info['group_son'][j], 'ids_in_son': group_diy_info['ids_in_son'][j]})
+            info_of_this_group = {
+                'group_name': group,
+                'group_members': group_member_info,
+                'diy_info': diy_info
+            }
+            push_data['group_info'].append(info_of_this_group)
+        self.write(push_data)
 
     def post(self):
-
-        # id_be_arrangement = self.get_argument('id_be_arrangement')
-        # worker_ids = id_be_arrangement.split(',')
-        # startdate = datetime.datetime.strptime(self.get_argument('startdate'),'%Y-%m-%d')
-        # enddate = datetime.datetime.strptime(self.get_argument('enddate'),'%Y-%m-%d')
-        # days = (enddate-startdate).days
-        # starttime_get = self.get_argument('starttime')
-        # endtime_get = self.get_argument('endtime')
-        # for i in range(days):
-        #     for id in worker_ids:
-        #         date = startdate + datetime.timedelta(i)
-        #         starttime = datetime.datetime.strptime(str(date)+ starttime_get,'%Y-%m-%d %H:%M')
-        #         endtime = datetime.datetime.strptime(str(date) + endtime_get,'%Y-%m-%d %H:%M')
-        #         print(starttime)
-        #         work_arrangement_obj = db.WorkArrangement(worker_id=id,
-        #                                                   date=date,
-        #                                                   starttime=starttime,
-        #                                                   endtime=endtime)
-        #         session.add(work_arrangement_obj)
-        session.commit()
-        self.write('成功')
+        pass

@@ -19,7 +19,7 @@ class EmployeeInservice(Base):
     register_date = Column(Date,onupdate=True)
 
     def __repr__(self):
-        return '姓名：%s，工号：%s' % (self.name,self.worker_id)
+        return 'name:%s,id:%s,dep_job:%s' % (self.name,self.worker_id,self.dep_job)
 
 class EmployeeResigned(Base):
     __tablename__ = 'employee_resigned'

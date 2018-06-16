@@ -16,7 +16,6 @@ from handlers.admin.editrole import EditRoleHandler
 from handlers.logout import LogoutHandler
 from handlers.attendance.workday import WorkDayHandler
 from tornado.web import StaticFileHandler
-from handlers.test import TestHandler
 
 current_path = os.path.join(os.path.dirname(__file__))
 
@@ -36,7 +35,6 @@ url = [(r'/attendance',IndexAttHandler),
        (r'/admin/editper',EditPerHandler),
        (r'/logout',LogoutHandler),
        (r'/attendance/workday',WorkDayHandler),
-       (r'/test',TestHandler),
        (r'^/attendance/(.*?)$',StaticFileHandler,{"path":os.path.join(current_path, "templates/attendance")}),
        (r'^/statics/(.*?)$', StaticFileHandler, {"path": os.path.join(current_path, "statics")})
        ]
