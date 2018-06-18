@@ -43,10 +43,10 @@
                 </tr>
                 <tr>
                     <td><h3>开始日期：</h3></td>
-                    <td><input id="start_date" name="start_date" type="date" /></td>
+                    <td><input :name="'start_date_of_'+group.group_name" type="date" /></td>
                     <td><br></td>
                     <td><h3>结束日期：</h3></td>
-                    <td><input id="end_date" name="end_date" type="date" /></td>
+                    <td><input :name="'end_date_of_'+group.group_name" type="date" /></td>
                     <td><br></td>
                     <td><br></td>
                 </tr>
@@ -71,7 +71,9 @@
                         </div>
                     </td>
                 </tr>
-                <tr><td></td></tr>>
+                <tr><td><button :name="group.group_name" class="ui green button" onclick="submit(this.name)">
+                    提交本组排班
+                </button></td></tr>>
             </table>
             <br>
         </div>

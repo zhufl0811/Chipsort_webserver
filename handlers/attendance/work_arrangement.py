@@ -3,6 +3,7 @@ from handlers.basehandler import BaseHandler
 from models.info import EmployeeInservice
 from models.attendance import DIYGroupDivide
 from methods.ormoperator import OrmOperator
+import json
 
 class WorkArrangementHandler(BaseHandler):
     @tornado.web.authenticated
@@ -22,7 +23,6 @@ class WorkArrangementHandler(BaseHandler):
             groups_be_operated.remove(group_of_thisid[0])
         else:
             groups_be_operated=group_of_thisid
-
         for group in groups_be_operated:
             group_member_info = []
             members_info = oo_e.query_all('worker_id', 'name', dep_job = group)
@@ -42,4 +42,10 @@ class WorkArrangementHandler(BaseHandler):
         self.write(push_data)
 
     def post(self):
-        pass
+        data=str(self.request.body,encoding = 'utf-8')[1:-1].replace('\"','').split(',')
+        data_dict={}
+        for item in data:
+            item=item.split(':')
+            data_dict[item[0]]=item[1]
+        print(data_dict)
+        self.write({'code':200})
