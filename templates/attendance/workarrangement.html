@@ -7,7 +7,7 @@
     <script src="../../statics/js/vue.js"></script>
     <script src="../../statics/js/jquery.js"></script>
     <!--<script src="../../statics/js/axios.min.js"></script>-->
-    <script src = "../../statics/js/main.js"></script>
+    <script src = "../../statics/js/main.js?v=1.0.1"></script>
     <title>排班</title>
 </head>
 <body onload=navbar()>
@@ -63,21 +63,76 @@
                             </div>
                             <div class="cal_right_call" style="width: 65%">
                                 <div class="cal_radio">
-                                    <input type="radio" :name='group.group_members[7*i+j-8].id' value="1" class = 'ui checkbox'>早班1<br>
-                                    <input type="radio" :name='group.group_members[7*i+j-8].id' value="2" class = 'ui checkbox'>早班<br>
-                                    <input type="radio" :name='group.group_members[7*i+j-8].id' value="3" class = 'ui checkbox'>晚班<br>
+                                    <input type="radio" :name='group.group_members[7*i+j-8].id' value="1" class = 'ui checkbox'>
+                                    <label onclick="easychose(this)">早班1<br></label>
+                                    <input type="radio" :name='group.group_members[7*i+j-8].id' value="2" class = 'ui checkbox'>
+                                    <label onclick="easychose(this)">早班<br></label>
+                                    <input type="radio" :name='group.group_members[7*i+j-8].id' value="3" class = 'ui checkbox'>
+                                    <label onclick="easychose(this)">晚班<br></label>
                                 </div>
                             </div>
                         </div>
                     </td>
                 </tr>
-                <tr><td><button :name="group.group_name" class="ui green button" onclick="submit(this.name)">
-                    提交本组排班
-                </button></td></tr>>
+
             </table>
             <br>
+            <table width="100%" :name="group.group_name+'_diy_group_son'">
+                <tr><td rowspan="6" style="width: 5%;text-align: center"><h2>自助分组</h2></td></tr>
+                <tr><td></td>
+                    <td width="5%">未分组成员:</td>
+                    <td colspan="3">
+                        <div v-for="id in group.diy_info.ids_not_diyed" style="display: inline-block">
+                        <input type="checkbox" :value="id" :id="id+'_diy'" >
+                        <label :for="id+'_diy'" >{{id}}&emsp;</label>
+                        </div>
+                    </td>
+                    <td width="7%"><input style="width:100%" type="text" placeholder="输入名称"></td>
+                    <td width="4%">
+                        <button onclick="submit_diy(this)" :title="'请至少选中两名员工'" class="ui green tiny button" name="newdiy" style="margin: 0;padding: 5px">
+                            新建分组
+                        </button>
+                    </td>
+                </tr>
+                <tr v-for="son_group in group.diy_info.diy_group_info"><td></td>
+                    <td>
+                        {{son_group.son_group_name}}:
+                    </td>
+                    <td>
+                        <div v-for="id in son_group.ids_in_son.split(',')" style="display: inline-block">
+                            &ensp;&ensp;{{id}}&ensp;
+                        </div>
+                    </td>
+                    <td width="7%">
+                        <button name='select_group_1' onclick="select_group(this)" class="ui blue tiny button" style="margin: 0;padding: 5px">
+                            全部早班1
+                        </button>
+                    </td>
+                    <td width="7%">
+                        <button name='select_group_2' onclick="select_group(this)" class="ui blue tiny button" style="margin: 0;padding: 5px">
+                            全部早班
+                        </button>
+                    </td>
+                    <td width="7%">
+                        <button name='select_group_3' onclick="select_group(this)" class="ui blue tiny button" style="margin: 0;padding: 5px">
+                            全部晚班
+                        </button>
+                    </td>
+                    <td width="7%">
+                        <button onclick="delete_group(this)" :name="'del_'+son_group.son_group_name" class="ui red tiny button" style="margin: 0;padding: 5px">
+                            删除分组
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            <div style="margin-bottom: 60px" align="center">
+            <button :name="group.group_name" class="ui green button" onclick="submit_wa(this.name)"
+                    :title="'提交后会有延迟，请耐心等待'">
+            提交本组排班
+            </button>
+            </div>
         </div>
     </div>
 </div>
-<script src="../../statics/js/workarrangement.js"></script>
+<script src="../../statics/js/workarrangement.js?v=1.1.92"></script>
 </html>

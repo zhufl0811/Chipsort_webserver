@@ -15,9 +15,10 @@ class WorkArrangement(Base):
     worker_id = Column(String(20),primary_key = True,nullable = False)
     date = Column(Date,primary_key = True,nullable = False)
     type = Column(Integer,nullable = False)
+    operator_id = Column(String(10),nullable = False)
 
 class WorkArrangementTime(Base):
-    __tablename__ = 'workarrangement_time'
+    __tablename__ = 'workarrangement_type'
     type = Column(Integer,nullable = False,primary_key = True)
     start_time = Column(Time,nullable = False)
     end_time = Column(Time, nullable = False)
