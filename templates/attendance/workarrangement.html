@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../../statics/css/mystyle.css">
+    <link rel="stylesheet" href="../../statics/css/mystyle.css?v=1.0.7">
     <link rel="stylesheet" href="../../statics/css/semantic.min.css">
     <script src="../../statics/js/vue.js"></script>
     <script src="../../statics/js/jquery.js"></script>
-    <!--<script src="../../statics/js/axios.min.js"></script>-->
     <script src = "../../statics/js/main.js?v=1.0.1"></script>
     <title>排班</title>
 </head>
@@ -32,7 +31,7 @@
 
 </div>
 <br>
-<div class="body">
+<div class="ui container" style="width:80%">
     <div id="form_wa">
         <div v-for="group in group_info">
             <table width="100%" :name="group.group_name">
@@ -43,33 +42,28 @@
                 </tr>
                 <tr>
                     <td><h3>开始日期：</h3></td>
-                    <td><input :name="'start_date_of_'+group.group_name" type="date" /></td>
-                    <td><br></td>
+                    <td colspan="2"><input :name="'start_date_of_'+group.group_name" type="date" class="ui input"/></td>
                     <td><h3>结束日期：</h3></td>
-                    <td><input :name="'end_date_of_'+group.group_name" type="date" /></td>
-                    <td><br></td>
-                    <td><br></td>
+                    <td colspan="3"><input :name="'end_date_of_'+group.group_name" type="date" class="ui input"/></td>
                 </tr>
                 <tr v-for="i in Math.ceil((group.group_members).length/7)">
                     <td v-for="j in 7" width="14%">
                         <div class="cal_cell" v-if="(7*i+j-8)<(group.group_members).length" >
-                            <div class="cal_left_cell" style="font-size: 12px">
-                                <div style="height: 40px;line-height: 60px;font-size: 18px">
+                            <div class="cal_left_cell">
+                                <div>
                                     {{group.group_members[7*i+j-8].id}}
                                 </div>
-                                <div style="height: 40px;line-height: 20px">
+                                <div>
                                     {{group.group_members[7*i+j-8].name}}
                                 </div>
                             </div>
-                            <div class="cal_right_call" style="width: 65%">
-                                <div class="cal_radio">
-                                    <input type="radio" :name='group.group_members[7*i+j-8].id' value="1" class = 'ui checkbox'>
-                                    <label onclick="easychose(this)">早班1<br></label>
-                                    <input type="radio" :name='group.group_members[7*i+j-8].id' value="2" class = 'ui checkbox'>
-                                    <label onclick="easychose(this)">早班<br></label>
-                                    <input type="radio" :name='group.group_members[7*i+j-8].id' value="3" class = 'ui checkbox'>
-                                    <label onclick="easychose(this)">晚班<br></label>
-                                </div>
+                            <div class="cal_right_cell">
+                                    <input type="radio" :name='group.group_members[7*i+j-8].id' value="1" :id="group.group_members[7*i+j-8].id+'_radio_1'" class = 'ui radio'>
+                                    <label :for="group.group_members[7*i+j-8].id+'_radio_1'">早班1<br></label>
+                                    <input type="radio" :name='group.group_members[7*i+j-8].id' value="2" :id="group.group_members[7*i+j-8].id+'_radio_2'" class = 'ui radio'>
+                                    <label :for="group.group_members[7*i+j-8].id+'_radio_2'">早班<br></label>
+                                    <input type="radio" :name='group.group_members[7*i+j-8].id' value="3" :id="group.group_members[7*i+j-8].id+'_radio_3'" class = 'ui radio>'>
+                                    <label :for="group.group_members[7*i+j-8].id+'_radio_3'">晚班<br></label>
                             </div>
                         </div>
                     </td>
@@ -134,5 +128,5 @@
         </div>
     </div>
 </div>
-<script src="../../statics/js/workarrangement.js?v=1.1.92"></script>
+<script src="../../statics/js/workarrangement.js?v=1.1.95"></script>
 </html>

@@ -29,5 +29,7 @@ class WorkDayHandler(BaseHandler):
         oo_wd.add_some_row(date_record=list(workday_info.keys()),
                                mark=[workday_info[key] for key in list(workday_info.keys())])
 
-        self.write('''<head><script>setTimeout("javascript:location.href='/attendance'", 1500);</script></head>
-                            <h2>操作成功，将跳转到考勤首页</h2>''')
+        self.write('''<script>
+                        alert('操作成功');
+                        window.location='/attendance'
+                    </script>''')

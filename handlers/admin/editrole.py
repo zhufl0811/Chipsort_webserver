@@ -40,5 +40,7 @@ class EditRoleHandler(BaseHandler):
         oo_rp.delete(role_name=role_name)
         for url in new_url:
             oo_rp.add_row(role_name=role_name,url=url)
-        self.write('''<head><script>setTimeout("javascript:location.href='/admin/delrole'", 1500);</script></head>
-                                        <h2 align='center'>修改成功，将跳转到之前页</h2>''')
+        self.write('''<script>
+                                        alert('修改成功');
+                                        window.location='/admin/delrole'
+                                    </script>''')

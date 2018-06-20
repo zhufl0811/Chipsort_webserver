@@ -35,5 +35,7 @@ class AddRoleHandler(BaseHandler):
         for url in urls_can_visit:
             oo_rp = OrmOperator(auth.RolePermission)
             oo_rp.add_row(role_name=role_name,url=url)
-        self.write('''<head><script>setTimeout("javascript:location.href='/admin/addrole'", 1500);</script></head>
-                            <h2>添加成功，将跳转到之前页</h2>''')
+        self.write('''<script>
+                        alert('添加成功');
+                        window.location='/admin/addrole'
+                    </script>''')

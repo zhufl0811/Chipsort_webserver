@@ -1,2 +1,4 @@
-a='S510,s635,s600'
-print(a[:4])
+import time
+now=time.time()
+time.sleep(5)
+print(time.time()-now)

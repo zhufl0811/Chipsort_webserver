@@ -12,18 +12,18 @@ function get_days_before_sat(year,month) {
 function createcell(date,weekday,year,month,start_date,end_date) {
     var today_date=new Date(year,month,date);
     if(start_date<=today_date&today_date<=end_date){
-        var left_content = String(date)+"</div><div class='cal_right_call'>";
+        var left_content = String(date)+"</div><div class='cal_right_cell'>";
         if(weekday==0||weekday==6){
             var startstr= "<td><div class='cal_cell'><div class='cal_left_cell_weekend'>";
-            var right_content="<div class='cal_radio'><input type='radio' class='ui checkbox' value=1 name="+year+'-'+String(month+1)+'-'+date+">"+'上班'+"</div><div class='cal_radio'>"+
-                "<input type='radio' value=0 class='ui checkbox' checked='checked' name="+year+'-'+String(month+1)+'-'+date+">"+'休假'+"</div><div class='cal_radio'>"+
-                "<input type='radio' value=2 class='ui checkbox' name="+year+'-'+String(month+1)+'-'+date+">"+'法定</div>'
+            var right_content="<div class='cal_radio'><input type='radio' class='ui checkbox' value=1 name="+year+'-'+String(month+1)+'-'+date+">"+"<label onclick='easychose(this)'>上班</label>"+"</div><div class='cal_radio'>"+
+                "<input type='radio' value=0 class='ui checkbox' checked='checked' name="+year+'-'+String(month+1)+'-'+date+">"+"<label onclick='easychose(this)'>休假</label>"+"</div><div class='cal_radio'>"+
+                "<input type='radio' value=2 class='ui checkbox' name="+year+'-'+String(month+1)+'-'+date+">"+"<label onclick=\'easychose(this)\'>法定</label></div>"
         }
         else{
             var startstr= "<td><div class='cal_cell'><div class='cal_left_cell'>";
-            var right_content="<div class='cal_radio'><input type='radio' class='ui checkbox' checked='checked' value=1 name="+year+'-'+String(month+1)+'-'+date+">"+"上班</div><div class='cal_radio'>"+
-                "<input type='radio' value=0 class='ui checkbox' name="+year+'-'+String(month+1)+'-'+date+">"+'休假'+"</div><div class='cal_radio'>"+
-                "<input type='radio' value=2 class='ui checkbox' name="+year+'-'+String(month+1)+'-'+date+">"+'法定</div>'
+            var right_content="<div class='cal_radio'><input type='radio' class='ui checkbox' checked='checked' value=1 name="+year+'-'+String(month+1)+'-'+date+">"+"<label onclick='easychose(this)'>上班</label></div><div class='cal_radio'>"+
+                "<input type='radio' value=0 class='ui checkbox' name="+year+'-'+String(month+1)+'-'+date+">"+"<label onclick='easychose(this)'>休假</label>"+"</div><div class='cal_radio'>"+
+                "<input type='radio' value=2 class='ui checkbox' name="+year+'-'+String(month+1)+'-'+date+">"+"<label onclick='easychose(this)'>法定</label></div>"
         }
         var endstr = "</div></div></td>";
         var content = startstr+left_content+right_content+endstr;

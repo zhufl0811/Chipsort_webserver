@@ -22,5 +22,7 @@ class DelUserHandler(BaseHandler):
             oo_u.delete(worker_id=worker_id)
             oo_ur = OrmOperator(UserRole)
             oo_ur.delete(worker_id=worker_id)
-            self.write('''<head><script>setTimeout("javascript:location.href='/admin/deluser'", 1500);</script></head>
-                                        <h2>删除成功，将跳转到之前页</h2>''')
+            self.write('''<script>
+                                    alert('删除成功');
+                                    window.location='/admin/deluser'
+                                </script>''')

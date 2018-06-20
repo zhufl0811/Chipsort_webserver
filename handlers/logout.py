@@ -5,5 +5,7 @@ class LogoutHandler(BaseHandler):
         pass
     def get(self):
         self.clear_all_cookies()
-        self.write('''<head><script>setTimeout("javascript:location.href='/login'", 1500);</script></head>
-                                        <h2>注销成功，将跳转到登陆页</h2>''')
+        self.write('''<script>
+                        alert('注销成功');
+                        window.location='/login'
+                    </script>''')

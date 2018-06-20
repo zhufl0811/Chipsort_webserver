@@ -18,4 +18,7 @@ class LoginHandler(BaseHandler):
             self.set_secure_cookie("worker_id", worker_id,expires_days=None)
             self.redirect('/')
         else:
-            self.write('/login')
+            self.write('''<script>
+                            alert('账户名或密码错误，请重新登录成功');
+                            window.location='/login'
+                        </script>''')

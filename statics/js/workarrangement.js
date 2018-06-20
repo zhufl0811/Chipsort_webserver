@@ -23,6 +23,7 @@ var greeting = new Vue({
     }
 });
 
+var a;
 var getgroup = new Vue({
     el:'#form_wa',
     data:{
@@ -40,6 +41,7 @@ var getgroup = new Vue({
                 type:'get',
                 success:function (data) {
                     mv.group_info = data.group_info;
+                    a=data.group_info
                     }
                 });
         }
@@ -91,10 +93,6 @@ function submit_wa(group_name) {
         alert('请输入**本组**的开始日期')
     }
 
-}
-
-function easychose(that) {
-    $(that).prev().prop('checked','checked');
 }
 
 function submit_diy(that) {

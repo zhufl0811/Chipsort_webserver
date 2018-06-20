@@ -50,7 +50,7 @@ a.sidebar_url{
   padding-left: 6px;
     text-align: left;
     z-index:500;
-    margin-top: -40px;
+    margin-top: -10px;
 }
 
 .dropdown:hover .dropdown-content {
@@ -79,7 +79,6 @@ a.sidebar_url{
 
 .head_text{
     font-size: 20px;
-    font-family: 文泉驿正黑;
 }
 
 .indexbox{
@@ -111,40 +110,32 @@ a.sidebar_url{
 }
 .cal_left_cell{
     display: inline-block;
-    width: 30%;
+    width: 40%;
     text-align: center;
-    font-family: monospace;
-    font-size: 30px;
 }
 .cal_left_cell_weekend{
     display: inline-block;
-    width: 30%;
+    width: 40%;
     color: #ffd178;
     text-align: center;
-    font-family: monospace;
-    font-size: 30px;
 }
 
-.cal_right_call{
+.cal_right_cell{
     display: inline-block;
-    padding-top: 5%;
-    padding-left: 15%;
-    width:70%;
+    width:60%;
 }
 
 .cal_right_cell_outrange{
     display: inline-block;
-    width: 70%;
+    width: 60%;
     height: 80px;
 }
 
 .cal_left_cell_outrange{
     display: inline-block;
-    width: 30%;
+    width: 40%;
     height: 80px;
     text-align: center;
-    font-family: monospace;
-    font-size: 30px;
 }
 
 .cal_radio{
@@ -169,30 +160,3 @@ div.navbar{
     margin-right: 0;
 }
 
-div.wa_cell_topleft{
-    height: 40px;
-    line-height: 60px;
-}
-
-div.wa_cell_bottomleft{
-    height: 40px;
-    line-height: 20px;
-}
-
-.wa_cell_left{
-    height: 80px;
-    display: inline-block;
-    width:35%;
-    font-size: 20px;
-}
-
-.wa_cell_right{
-    height: 80px;
-    display: inline-block;
-    width: 35%;
-    font-size: 20px;
-}
-
-.wa_cell_right input{
-    display: block;
-}

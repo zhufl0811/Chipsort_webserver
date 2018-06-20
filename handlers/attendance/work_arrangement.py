@@ -91,16 +91,16 @@ class WorkArrangementHandler(BaseHandler):
                 id_list.append(key)
                 type_list.append(data_dict[key])
             operate_days = (end_date - start_date).days + 1
+            id_list*=operate_days
+            type_list*=operate_days
+            date_list=[]
             operator_id = [str(self.get_secure_cookie('worker_id'), encoding = 'utf-8')] * len(id_list)
             for i in range(operate_days):
                 date = start_date + datetime.timedelta(i)
-                # #先判断是否存在，存在则删除
-                # for key in data_dict:
-                #     if oo_wa.query_all(date=date,worker_id=key):
-                #         oo_wa.delete(date=date,worker_id=key)
-                date_list = [date] * len(id_list)
-                oo_wa.delete_some_row(date = date_list, worker_id = id_list)
-                # 一次性添加一个日期中所有员工的排班
-                oo_wa.add_some_row(date = date_list, worker_id = id_list,
-                                   type = type_list, operator_id = operator_id)
+                date_temp=([date] * int((int(len(id_list))/int(operate_days))))
+                date_list.extend(date_temp)
+            oo_wa.delete_some_row(date = date_list, worker_id = id_list)
+            # 一次性添加一个日期中所有员工的排班
+            oo_wa.add_some_row(date = date_list, worker_id = id_list,
+                               type = type_list, operator_id = operator_id)
             self.write({'code': 200})

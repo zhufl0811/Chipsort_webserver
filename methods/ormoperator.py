@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+import time
 
 Base = declarative_base()
 
@@ -25,11 +26,13 @@ class OrmOperator():
             for j in range(len(all_keys)):
                 dd[all_keys[j]] = kwargs[all_keys[j]][i]
             dict_list.append(dd)
-        for dict in dict_list:
-            obj = self.table(**dict)
-            self.session.add(obj)
-        self.session.commit()
-        self.session.close()
+        conn=self.engine.connect()
+        conn.execute(self.table.__table__.insert(),dict_list)
+        # for dict in dict_list:
+        #     obj = self.table(**dict)
+        #     self.session.add(obj)
+        # self.session.commit()
+        # self.session.close()
     def query_all(self,*args,**kwarg):
         #查询方法，Object.query_all(‘要返回的列1’...,column1='xxx',column2='ddd'),
         # 如果arg中没有值，则返回查询到的对象
@@ -79,12 +82,14 @@ class OrmOperator():
             for j in range(len(all_keys)):
                 dd[all_keys[j]] = kwargs[all_keys[j]][i]
             dict_list.append(dd)
-        for dict in dict_list:
-            obj=self.session.query(self.table).filter_by(**dict).first()
-            if obj:
-                self.session.delete(obj)
-        self.session.commit()
-        self.session.close()
+        conn = self.engine.connect()
+        conn.execute(self.table.__table__.delete(),dict_list)
+        # for dict in dict_list:
+        #     obj=self.session.query(self.table).filter_by(**dict).first()
+        #     if obj:
+        #         self.session.delete(obj)
+        # self.session.commit()
+        # self.session.close()
 
 if __name__=='__main__':
     from models.attendance import DIYGroupDivide

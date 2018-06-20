@@ -24,5 +24,7 @@ class DelRoleHandler(BaseHandler):
             oo_ur.delete(role_name=role_name)
             oo_rp = OrmOperator(RolePermission)
             oo_rp.delete(role_name=role_name)
-            self.write('''<head><script>setTimeout("javascript:location.href='/admin/delrole'", 1500);</script></head>
-                                        <h2>删除成功，将跳转到之前页</h2>''')
+            self.write('''<script>
+                                    alert('删除成功');
+                                    window.location='/admin/delrole'
+                                </script>''')

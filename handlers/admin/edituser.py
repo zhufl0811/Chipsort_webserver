@@ -24,6 +24,7 @@ class EditUserHandler(BaseHandler):
         new_role = self.get_arguments('role_selected[]')
         for role in new_role:
             oo_ur.add_row(worker_id=worker_id,role_name=role)
-        self.write('''<head><script>setTimeout("javascript:location.href='/admin/deluser'", 1500);</script></head>
-                                        <h2 align='center'>修改成功，将跳转到之前页</h2>''')
-
+        self.write('''<script>
+                                        alert('修改成功');
+                                        window.location='/admin/deluser'
+                                    </script>''')

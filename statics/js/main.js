@@ -18,6 +18,10 @@ function dopost(URL, PARAMS) {
     }
 }
 
+function easychose(that) {
+    $(that).prev().prop('checked','checked');
+}
+
 var url_to_name=new Array()
 url_to_name['']='首页';
 url_to_name['attendance']='考勤首页';
