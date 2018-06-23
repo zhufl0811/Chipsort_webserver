@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../../statics/css/mystyle.css?v=1.0.7">
+    <link rel="stylesheet" href="../../statics/css/mystyle.css?v=1.0.10">
     <link rel="stylesheet" href="../../statics/css/semantic.min.css">
     <script src="../../statics/js/vue.js"></script>
     <script src="../../statics/js/jquery.js"></script>
@@ -22,7 +22,7 @@
         </tr>
 
         <tr>
-            <td align="right"><span id="greeting">{{ worker_id }}</span>，您好，<a href="/logout">点我注销</a></td>
+            <td align="right"><span id="greeting">{{ worker_name }}</span>，您好，<a href="/logout">点我注销</a></td>
         </tr>
     </table>
 </div>
@@ -33,37 +33,48 @@
 <br>
 <div class="ui container" style="width:80%">
     <div id="form_wa">
-        <div v-for="group in group_info">
+        <select v-model="group_selected" v-if="group_info.length>1" class="ui dropdown">
+            <option v-for="group in group_info">{{group.group_name}}</option>
+        </select>
+        <div v-for="group in group_info" v-show="group_selected==group.group_name">
             <table width="100%" :name="group.group_name">
-                <tr>
-                    <td colspan="7">
+                <tr v-if="group_info.length==1">
+                    <td colspan="7" >
                         <h2>{{group.group_name}}</h2>
                     </td>
                 </tr>
                 <tr>
-                    <td><h3>开始日期：</h3></td>
-                    <td colspan="2"><input :name="'start_date_of_'+group.group_name" type="date" class="ui input"/></td>
-                    <td><h3>结束日期：</h3></td>
-                    <td colspan="3"><input :name="'end_date_of_'+group.group_name" type="date" class="ui input"/></td>
+                    <td colspan="5" width="70%"><h3 style="display: inline-block">开始日期：</h3>
+                        <input :name="'start_date_of_'+group.group_name" type="date" />---
+                        <h3 style="display: inline-block">结束日期：</h3>
+                        <input :name="'end_date_of_'+group.group_name" type="date" size="16"/>
+                    <td colspan="2" width="30%" align="center">
+                        <button class="ui tiny blue button" onclick="shortcut(this)">上月</button>
+                        <button class="ui tiny blue button" onclick="shortcut(this)">本月</button>
+                        <button class="ui tiny blue button" onclick="shortcut(this)">下月</button>
+                    </td>
                 </tr>
                 <tr v-for="i in Math.ceil((group.group_members).length/7)">
                     <td v-for="j in 7" width="14%">
                         <div class="cal_cell" v-if="(7*i+j-8)<(group.group_members).length" >
                             <div class="cal_left_cell">
-                                <div>
                                     {{group.group_members[7*i+j-8].id}}
-                                </div>
-                                <div>
+                                    <br>
                                     {{group.group_members[7*i+j-8].name}}
-                                </div>
                             </div>
                             <div class="cal_right_cell">
+                                <div style="margin-top: 10%;margin-bottom: 10%">
                                     <input type="radio" :name='group.group_members[7*i+j-8].id' value="1" :id="group.group_members[7*i+j-8].id+'_radio_1'" class = 'ui radio'>
-                                    <label :for="group.group_members[7*i+j-8].id+'_radio_1'">早班1<br></label>
+                                    <label :for="group.group_members[7*i+j-8].id+'_radio_1'">早班1</label>
+                                </div>
+                                <div style="margin-top: 10%;margin-bottom: 10%">
                                     <input type="radio" :name='group.group_members[7*i+j-8].id' value="2" :id="group.group_members[7*i+j-8].id+'_radio_2'" class = 'ui radio'>
                                     <label :for="group.group_members[7*i+j-8].id+'_radio_2'">早班<br></label>
+                                </div>
+                                <div style="margin-top: 10%;margin-bottom: 10%">
                                     <input type="radio" :name='group.group_members[7*i+j-8].id' value="3" :id="group.group_members[7*i+j-8].id+'_radio_3'" class = 'ui radio>'>
                                     <label :for="group.group_members[7*i+j-8].id+'_radio_3'">晚班<br></label>
+                                </div>
                             </div>
                         </div>
                     </td>
@@ -120,13 +131,12 @@
                 </tr>
             </table>
             <div style="margin-bottom: 60px" align="center">
-            <button :name="group.group_name" class="ui green button" onclick="submit_wa(this.name)"
-                    :title="'提交后会有延迟，请耐心等待'">
+            <button :name="group.group_name" class="ui green button" onclick="submit_wa(this.name)">
             提交本组排班
             </button>
             </div>
         </div>
     </div>
 </div>
-<script src="../../statics/js/workarrangement.js?v=1.1.95"></script>
+<script src="../../statics/js/workarrangement.js?v=1.2.32"></script>
 </html>

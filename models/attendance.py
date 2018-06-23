@@ -1,5 +1,5 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, String, Integer,Date,Time
+from sqlalchemy import Column, String, Integer,Date,Time,Boolean
 from sqlalchemy import create_engine
 engine = create_engine('mysql+pymysql://root:0811@localhost:3306/chipsort?charset=utf8')
 
@@ -19,9 +19,10 @@ class WorkArrangement(Base):
 
 class WorkArrangementTime(Base):
     __tablename__ = 'workarrangement_type'
-    type = Column(Integer,nullable = False,primary_key = True)
+    typename = Column(String(20),nullable = False,primary_key = True)
     start_time = Column(Time,nullable = False)
     end_time = Column(Time, nullable = False)
+    inuse = Column(Boolean,nullable = False)
 
 class DIYGroupDivide(Base):
     __tablename__ = 'diy_group_divide'

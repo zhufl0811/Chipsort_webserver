@@ -13,9 +13,11 @@ class WorkArrangementHandler(BaseHandler):
         worker_id = str(self.get_secure_cookie('worker_id'),encoding = 'utf-8')
         oo_e=OrmOperator(EmployeeInservice)
         group_of_thisid = oo_e.query_all('dep_job',worker_id=worker_id)
+        worker_name = oo_e.query_all('name',worker_id=worker_id)[0]
         oo_diy = OrmOperator(DIYGroupDivide)
         push_data = {
             'worker_id': worker_id,
+            'worker_name':worker_name,
             'group_info':[]
         }
         if group_of_thisid[0][-2:]=='经理':#如果是经理级别，那么就获得该部门的所有分组信息。
@@ -46,6 +48,7 @@ class WorkArrangementHandler(BaseHandler):
                 'diy_info': diy_info
             }
             push_data['group_info'].append(info_of_this_group)
+        print(push_data)
         self.write(push_data)
 
     @tornado.web.authenticated

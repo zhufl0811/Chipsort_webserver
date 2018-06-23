@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../statics/css/mystyle.css?v=1.2.32">
+    <link rel="stylesheet" href="../../statics/css/semantic.min.css">
+    <script src="../../statics/js/vue.js"></script>
+    <script src="../../statics/js/jquery.js"></script>
+    <script src = "../../statics/js/main.js?v=1.0.1"></script>
+    <title>排班</title>
+</head>
+<body onload=navbar()>
+<div id="all" class="ui container" style="width: 80%">
+    <div>
+        <table width="100%">
+            <tr>
+                <td rowspan="2" width="15%">
+                    <a href="/"><br><img  src="../../statics/pictures/chipsort_logo.png" height='64px' weight='232px'>
+                        </a>
+                </td>
+                <td height="50%" align="center">
+                <h1 class="head_text" style="font-size: 36px;padding-right: 18%;padding-top:22px;">考 勤 系 统</h1></td>
+            </tr>
+
+            <tr>
+                <td align="right"><span>{{ worker_name }}</span>，您好，<a href="/logout">点我注销</a></td>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <div id="navbar" class="navbar" style="width: 100%;left: 0">
+
+    </div>
+    <br>
+    <div>
+        <select v-model="group_selected_to_show" :disabled="group_info.length==1" class="ui button" style="font-size: 1.4em;padding: 0.2em">
+            <option v-for="group in group_info">{{group.group_name}}</option>
+        </select>
+    </div>
+    <br>
+    <div v-for="group in group_info" v-if="group_selected_to_show==group.group_name">
+        <table class="ui table" style="width: 100%">
+            <tr>
+                <td><h3 style="display: inline-block">开始日期：</h3>
+                    <input v-model="sub_info.start_date" type="date" />
+                <td>
+                    <h3 style="display: inline-block">结束日期：</h3>
+                    <input v-model="sub_info.end_date" type="date" size="16"/>
+                </td>
+                <td width="30%" align="center">
+                    <button class="ui tiny blue button" v-on:click="easy_operator">上月</button>
+                    <button class="ui tiny blue button" v-on:click="easy_operator">本月</button>
+                    <button class="ui tiny blue button" v-on:click="easy_operator">下月</button>
+                </td>
+            </tr>
+        </table>
+        <table v-for="key in Object.keys(group.diy_info)" class="ui table" v-if="group.diy_info[key].length" width="100%">
+            <tr>
+                <td class="head_text" colspan="7" >上次分组：{{key=='ids_not_diyed'?'未分组':key}}</td>
+            </tr>
+            <tr v-for="j in Math.ceil(group.diy_info[key].length/7)">
+                <td v-for="h in 7" width="14%" v-if="7*j+h-8<group.diy_info[key].length">
+                    <div class="cal_cell">
+                        <div class="cal_left_cell" style="vertical-align: top">
+                            {{group.diy_info[key][7*j+h-8]}}<br>
+                            {{group.group_members[group.diy_info[key][7*j+h-8]]}}
+                        </div>
+                        <div class="cal_right_cell">
+                            <div v-for="type in workarrangement_types">
+                                <input type="radio" class="ui radio" :id="group.diy_info[key][7*j+h-8]+'-'+type" :value="type"
+                                       :name="group.diy_info[key][7*j+h-8]" v-model="sub_info.wa_info[group.diy_info[key][7*j+h-8]]">
+                                <label :for="group.diy_info[key][7*j+h-8]+'-'+type">{{type}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td width="14%" v-if="j==Math.ceil(group.diy_info[key].length/7)" v-for="k in (group.diy_info[key].length%7==0?0:(7-group.diy_info[key].length%7))">
+                    <br>
+                </td>
+            </tr>
+            <tr>
+                <td width="14%" class="head_text">
+                    快捷操作
+                </td>
+                <td colspan="6">
+                    <button v-for="type in workarrangement_types" class="ui blue button" @click="select_son_group">
+                        全部{{type}}
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <button class="ui large green button" @click="sub_info_to_server">提交本组排班</button>
+    </div>
+</div>
+
+</body>
+<script src="../../statics/js/workarrangement_new.js?v=1.0.58"></script>
+</html>

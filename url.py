@@ -1,5 +1,6 @@
 import os
 from handlers.attendance.index import IndexAttHandler
+from handlers.attendance.workarrangement_type import WaTypeHandler
 from handlers.login import LoginHandler
 from handlers.index import IndexAllHandler
 from handlers.attendance.work_arrangement import WorkArrangementHandler
@@ -16,6 +17,7 @@ from handlers.admin.editrole import EditRoleHandler
 from handlers.logout import LogoutHandler
 from handlers.attendance.workday import WorkDayHandler
 from tornado.web import StaticFileHandler
+from handlers.attendance.work_arrangement_new import WorkArrangementNewHandler
 
 current_path = os.path.join(os.path.dirname(__file__))
 
@@ -34,6 +36,8 @@ url = [(r'/attendance',IndexAttHandler),
        (r'/admin/edituser(.*?)',EditUserHandler),
        (r'/admin/editper',EditPerHandler),
        (r'/logout',LogoutHandler),
+       (r'/attendance/workarrangement_new',WorkArrangementNewHandler),
+       (r'/attendance/workarrangement_type',WaTypeHandler),
        (r'/attendance/workday',WorkDayHandler),
        (r'^/attendance/(.*?)$',StaticFileHandler,{"path":os.path.join(current_path, "templates/attendance")}),
        (r'^/statics/(.*?)$', StaticFileHandler, {"path": os.path.join(current_path, "statics")})

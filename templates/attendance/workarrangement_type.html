@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../statics/css/mystyle.css?v=1.0.14">
+    <link rel="stylesheet" href="../../statics/css/semantic.min.css">
+    <script src="../../statics/js/vue.js"></script>
+    <script src="../../statics/js/jquery.js"></script>
+    <script src = "../../statics/js/main.js?v=1.0.3"></script>
+    <title>排班</title>
+</head>
+<body onload=navbar()>
+<div class="top">
+    <table width="100%">
+        <tr>
+            <td rowspan="2" width="15%">
+                <a href="/"><br><img  src="../../statics/pictures/chipsort_logo.png" height='64px' weight='232px'>
+                    </a>
+            </td>
+            <td height="50%" align="center">
+            <h1 class="head_text" style="font-size: 36px;padding-right: 18%;padding-top:22px;">考 勤 系 统</h1></td>
+        </tr>
+
+        <tr>
+            <td align="right"><span id="greeting">{{ worker_name }}</span>，您好，<a href="/logout">点我注销</a></td>
+        </tr>
+    </table>
+</div>
+<br>
+<div id="navbar" class="ui navbar">
+</div>
+<br>
+<div class="ui container" style="width: 80%" id="add_type">
+    <table class="ui table">
+        <tr>
+            <td width="28%">
+                输入名称：
+                <input class="input_diy" style="font-size:1em;" type="text" v-model="wa_type_name" placeholder="班别名称">
+                &emsp;{{wa_type_name==''?'不能为空！！':(name_list.indexOf(wa_type_name)>=0?'名称重复！！':'OK!!!')}}
+            </td>
+            <td width="21%">
+                开始时间：
+                <select v-model="start_hour">
+                    <option v-for="n in 24">
+                        {{String(n-1).length==1?('0'+(n-1)):n-1}}
+                    </option>
+                </select>:
+                <select v-model="start_min">
+                    <option v-for="m in 60">
+                        {{String(m-1).length==1?('0'+(m-1)):m-1}}
+                    </option>
+                </select>
+            </td>
+            <td width="21%">
+                结束时间：
+                <select v-model="end_hour">
+                    <option v-for="n in 24">
+                        {{String(n-1).length==1?('0'+(n-1)):n-1}}
+                    </option>
+                </select>:
+                <select v-model="end_min">
+                    <option v-for="m in 60">
+                        {{String(m-1).length==1?('0'+(m-1)):m-1}}
+                    </option>
+                </select>
+            </td>
+            <td width="15%">
+                <div class="ui toggle checkbox">
+                    <input type="checkbox" v-model="inuse">
+                    <label>启用</label>
+                </div>
+            </td>
+            <td align="right">
+                <button class="ui green button" style="padding-top:5%;padding-bottom:5%" v-on:click="sub_add">
+                    添加班别
+                </button>
+            </td>
+        </tr>
+    </table>
+    <table width="100%" class="ui table" style="text-align: center">
+        <tr >
+            <td class="head_text">班组名称</td>
+            <td class="head_text">开始时间</td>
+            <td class="head_text">结束时间</td>
+            <td class="head_text">是否启用</td>
+            <td colspan="2" class="head_text">操作</td>
+        </tr>
+        <tr v-for="type in type_info">
+            <td width="15%" class="head_text">
+                {{type.typename}}
+            </td>
+            <td width="20%">
+                <input v-model="type.start_time" :readonly="type.readonly" class="input_diy">
+            </td>
+            <td width="20%">
+                <input v-model="type.end_time" :readonly="type.readonly" class="input_diy">
+            </td>
+            <td width="20%">
+                <div class="ui toggle checkbox">
+                    <input type="checkbox" v-model="type.inuse" :disabled="type.readonly">
+                    <label>启用</label>
+                </div>
+            </td>
+            <td style="text-align: right">
+                <button v-on:click="type.readonly=!type.readonly" v-if="type.readonly" class="ui green tiny button">
+                    修改
+                </button>
+                <div class="ui two tiny buttons" v-if="!type.readonly" style="width: 70%">
+                    <button v-on:click="sub_edit" class="ui tiny green button" :name="type.typename" style="padding-left: 0;padding-right: 0">
+                        提交
+                    </button>
+                    <button v-on:click="type.readonly=!type.readonly" class="ui tiny grey button"  style="padding-left: 0;padding-right: 0">
+                        放弃
+                    </button>
+                </div>
+            </td>
+            <td style="text-align: left">
+                <button class="ui tiny red button" v-on:click="sub_del" :name="type.typename">
+                    删除
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+<script src="../../statics/js/wa_type.js?v=1.0.94"></script>
+</html>

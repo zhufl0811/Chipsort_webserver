@@ -18,10 +18,6 @@ function dopost(URL, PARAMS) {
     }
 }
 
-function easychose(that) {
-    $(that).prev().prop('checked','checked');
-}
-
 var url_to_name=new Array()
 url_to_name['']='首页';
 url_to_name['attendance']='考勤首页';
@@ -37,6 +33,7 @@ url_to_name['editrole']='修改角色';
 url_to_name['addper']='添加权限';
 url_to_name['editper']='修改权限';
 url_to_name['delper']='删除权限';
+url_to_name['workarrangement_type.html']='设定班表';
 
 function navbar() {
     var navdiv = document.getElementById('navbar');
@@ -63,3 +60,4 @@ function navbar() {
         }
     }
 }
+

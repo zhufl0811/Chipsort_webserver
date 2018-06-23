@@ -1,8 +1,8 @@
 var greeting = new Vue({
     el:'#greeting',
     data:{
-        worker_id:''
-
+        worker_id:'',
+        worker_name:''
     },
     created:function () {
         this.get_info()
@@ -16,6 +16,7 @@ var greeting = new Vue({
                 type:'get',
                 success:function (data) {
                     mv.worker_id=data.worker_id;
+                    mv.worker_name=data.worker_name
 
                 }
                 })
@@ -27,7 +28,8 @@ var a;
 var getgroup = new Vue({
     el:'#form_wa',
     data:{
-        group_info:''
+        group_info:'',
+        group_selected:''
     },
     created:function () {
         this.get_info()
@@ -41,12 +43,12 @@ var getgroup = new Vue({
                 type:'get',
                 success:function (data) {
                     mv.group_info = data.group_info;
-                    a=data.group_info
+                    mv.group_selected=data.group_info[0].group_name
                     }
                 });
-        }
-    }
-    });
+        },
+    },
+});
 
 function submit_wa(group_name) {
     var sub_info={};
@@ -165,4 +167,41 @@ function delete_group(that) {
             window.location.reload()
         }
     })
+}
+
+function dateToString(ddd){
+  var thisyear = ddd.getFullYear();
+  var thismonth =(ddd.getMonth() + 1).toString();
+  var tooday = (ddd.getDate()).toString();
+  if (thismonth.length === 1) {
+      thismonth = "0" + thismonth;
+  }
+  if (tooday.length === 1) {
+      tooday = "0" + tooday;
+  }
+  var dateTime = thisyear + "-" + thismonth + "-" + tooday;
+  return dateTime;
+}
+
+function shortcut(that) {
+    var tooday = new Date();
+    var thisyear = tooday.getFullYear();
+    var thismonth = tooday.getMonth();
+    if(that.textContent==='上月'){
+        var firstday=dateToString(new Date(thisyear,thismonth-1,1));
+        var lastday=dateToString(new Date(thisyear,thismonth,0));
+        $(that).parents('table').find("input")[0].value=firstday;
+        $(that).parents('table').find("input")[1].value=lastday;
+    }else if(that.textContent==='本月'){
+        var firstday=dateToString(new Date(thisyear,thismonth,1));
+        var lastday=dateToString(new Date(thisyear,thismonth+1,0));
+        $(that).parents('table').find("input")[0].value=firstday;
+        $(that).parents('table').find("input")[1].value=lastday;
+    }else{
+        var firstday=dateToString(new Date(thisyear,thismonth+1,1));
+        var lastday=dateToString(new Date(thisyear,thismonth+2,0));
+        $(that).parents('table').find("input")[0].value=firstday;
+        $(that).parents('table').find("input")[1].value=lastday;
+    }
+
 }
