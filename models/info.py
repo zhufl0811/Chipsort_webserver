@@ -96,61 +96,61 @@ class WorkArrangement(Base):
 if __name__ == '__main__':
     Base.metadata.create_all(engine)
 
-    old_connect = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='0811',
-                                  db='chipsort_old',charset='utf8')
-    cursor = old_connect.cursor()
-    # 获取‘chipsort_old’中的数据
-    cursor.execute('SELECT * FROM employee WHERE jobs=1')  # 获取在职人员的数据
-    employee_inservice_data = cursor.fetchall()
-    # cursor.execute('SELECT * FROM employee WHERE job!=1')  # 获取离职人员的数据
-    # employee_resigined_data = cursor.fetchall()
-    # cursor.execute('SELECT * FROM events WHERE event_time>\'2018-05-01\'')  # 获取打卡时间数据
-    # events_data = cursor.fetchall()
-    # cursor.execute('SELECT * FROM overtime WHERE dates>\'2018-05-01\'')  # 获取加班时间数据
-    # overtime_data = cursor.fetchall()
-    # cursor.execute('SELECT * FROM stroke WHERE dates>\'2018-04-01\'')  # 获取工作日信息
-    # stroke_data = cursor.fetchall()
-    # cursor.execute('SELECT * FROM vacation_all WHERE dates>\'2018-03-01\'')  # 获取假期信息
-    # vacation_data = cursor.fetchall()
-    # cursor.execute('SELECT * FROM vacation_species')  # 获取假期类型数据
-    # vacation_species_data = cursor.fetchall()
-    # cursor.close()
-    #
-    # for employee_inservice in employee_inservice_data:
-    #     employeeinservice = EmployeeInservice(worker_id=employee_inservice[0],name=employee_inservice[1],
-    #                                           dep_job=employee_inservice[3],
-    #                                           rating=employee_inservice[4],entry_date=employee_inservice[5],
-    #                                           register_date=employee_inservice[6])
-    #     session.add(employeeinservice)
-    for i in range(1,8):
-        em_in_obj = EmployeeInservice(worker_id = 's70'+str(i),name = '测试'+str(i))
-        session.add(em_in_obj)
-    #
-    # for er in employee_resigined_data:
-    #     reigned = EmployeeResigned(worker_id=er[0],name=er[1],job=er[2],group=er[3],rating=er[4],
-    #                                entry_date=er[5],register_date=er[6],resign_date=er[7])
-    #     session.add(reigned)
-    #
-    # for events in events_data:
-    #     event = Events(number=events[0],worker_id=events[1],punch_time=events[2])
-    #     session.add(event)
-    #
-    # for overtime in overtime_data:
-    #     ot_obj = Overtime(worker_id=overtime[0],date=overtime[1],starttime=overtime[2],endtime=overtime[3],
-    #                       hours=overtime[4],sort=overtime[5],type=overtime[6])
-    #     session.add(ot_obj)
-    #
-    # for stroke in stroke_data:
-    #     stroke_obj = Stroke(date=stroke[0],sort=stroke[1])
-    #     session.add(stroke_obj)
-    #
-    # for vacation in vacation_data:
-    #     va_obj = Vacation(worker_id=vacation[0],date=vacation[1],starttime=vacation[2],endtime=vacation[3],
-    #                       hours=(vacation[3]-vacation[2]).seconds/3600,kinds=vacation[4],user=vacation[5],type=vacation[6])
-    #     session.add(va_obj)
-    #
-    # for va_s in vacation_species_data:
-    #     va_s_obj = VacationSpecies(type=va_s[0],percent=va_s[1])
-    #     session.add(va_s_obj)
-    #
-    session.commit()
+    # old_connect = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='0811',
+    #                               db='chipsort_old',charset='utf8')
+    # cursor = old_connect.cursor()
+    # # 获取‘chipsort_old’中的数据
+    # cursor.execute('SELECT * FROM employee WHERE jobs=1')  # 获取在职人员的数据
+    # employee_inservice_data = cursor.fetchall()
+    # # cursor.execute('SELECT * FROM employee WHERE job!=1')  # 获取离职人员的数据
+    # # employee_resigined_data = cursor.fetchall()
+    # # cursor.execute('SELECT * FROM events WHERE event_time>\'2018-05-01\'')  # 获取打卡时间数据
+    # # events_data = cursor.fetchall()
+    # # cursor.execute('SELECT * FROM overtime WHERE dates>\'2018-05-01\'')  # 获取加班时间数据
+    # # overtime_data = cursor.fetchall()
+    # # cursor.execute('SELECT * FROM stroke WHERE dates>\'2018-04-01\'')  # 获取工作日信息
+    # # stroke_data = cursor.fetchall()
+    # # cursor.execute('SELECT * FROM vacation_all WHERE dates>\'2018-03-01\'')  # 获取假期信息
+    # # vacation_data = cursor.fetchall()
+    # # cursor.execute('SELECT * FROM vacation_species')  # 获取假期类型数据
+    # # vacation_species_data = cursor.fetchall()
+    # # cursor.close()
+    # #
+    # # for employee_inservice in employee_inservice_data:
+    # #     employeeinservice = EmployeeInservice(worker_id=employee_inservice[0],name=employee_inservice[1],
+    # #                                           dep_job=employee_inservice[3],
+    # #                                           rating=employee_inservice[4],entry_date=employee_inservice[5],
+    # #                                           register_date=employee_inservice[6])
+    # #     session.add(employeeinservice)
+    # for i in range(1,8):
+    #     em_in_obj = EmployeeInservice(worker_id = 's70'+str(i),name = '测试'+str(i))
+    #     session.add(em_in_obj)
+    # #
+    # # for er in employee_resigined_data:
+    # #     reigned = EmployeeResigned(worker_id=er[0],name=er[1],job=er[2],group=er[3],rating=er[4],
+    # #                                entry_date=er[5],register_date=er[6],resign_date=er[7])
+    # #     session.add(reigned)
+    # #
+    # # for events in events_data:
+    # #     event = Events(number=events[0],worker_id=events[1],punch_time=events[2])
+    # #     session.add(event)
+    # #
+    # # for overtime in overtime_data:
+    # #     ot_obj = Overtime(worker_id=overtime[0],date=overtime[1],starttime=overtime[2],endtime=overtime[3],
+    # #                       hours=overtime[4],sort=overtime[5],type=overtime[6])
+    # #     session.add(ot_obj)
+    # #
+    # # for stroke in stroke_data:
+    # #     stroke_obj = Stroke(date=stroke[0],sort=stroke[1])
+    # #     session.add(stroke_obj)
+    # #
+    # # for vacation in vacation_data:
+    # #     va_obj = Vacation(worker_id=vacation[0],date=vacation[1],starttime=vacation[2],endtime=vacation[3],
+    # #                       hours=(vacation[3]-vacation[2]).seconds/3600,kinds=vacation[4],user=vacation[5],type=vacation[6])
+    # #     session.add(va_obj)
+    # #
+    # # for va_s in vacation_species_data:
+    # #     va_s_obj = VacationSpecies(type=va_s[0],percent=va_s[1])
+    # #     session.add(va_s_obj)
+    # #
+    # session.commit()

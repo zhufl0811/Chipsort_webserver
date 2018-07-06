@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../statics/css/mystyle.css?v=1.2.32">
+    <link rel="stylesheet" href="../../statics/css/semantic.min.css">
+    <script src="../../statics/js/vue.js"></script>
+    <script src="../../statics/js/jquery.js"></script>
+    <script src = "../../statics/js/main.js?v=1.0.2"></script>
+    <title>排班</title>
+</head>
+<body onload=navbar()>
+<div id="all" class="ui container" style="width: 80%">
+    <div>
+        <table width="100%">
+            <tr>
+                <td rowspan="2" width="15%">
+                    <a href="/"><br><img  src="../../statics/pictures/chipsort_logo.png" height='64px' weight='232px'>
+                        </a>
+                </td>
+                <td height="50%" align="center">
+                <h1 class="head_text" style="font-size: 36px;padding-right: 18%;padding-top:22px;">考 勤 系 统</h1></td>
+            </tr>
+
+            <tr>
+                <td align="right"><span>{{ worker_name }}</span>，您好，<a href="/logout">点我注销</a></td>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <div id="navbar" class="navbar" style="width: 100%;left: 0">
+
+    </div>
+    <br>
+    <div>
+        <table class="ui table" style="width: 100%">
+            <tr>
+                <td colspan="2"><h3 style="display: inline-block">开始日期：</h3>
+                    <input v-model="query_condition.start_date" type="date" />
+                </td>
+                <td colspan="2">
+                    <h3 style="display: inline-block">结束日期：</h3>
+                    <input v-model="query_condition.end_date" type="date" size="16"/>
+                </td>
+                <td width="40%" align="center" colspan="3">
+                    <button class="ui tiny blue button" v-on:click="easy_operator">上月</button>
+                    <button class="ui tiny blue button" v-on:click="easy_operator">本月</button>
+                    <button class="ui tiny blue button" v-on:click="easy_operator">下月</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class="head_text">按组查询：</p>
+                </td>
+                <td>
+                    <select v-model="query_condition.group" class="ui dropdown" :disabled="!(query_condition.worker_id=='')">
+                        <option v-for="group in group_names">{{group}}</option>
+                    </select>
+                </td>
+                <td>
+                    <p class="head_text">按班别查询：</p>
+                </td>
+                <td>
+                    <select v-model="query_condition.type" class="ui dropdown" >
+                        <option v-for="type in Object.keys(types)">{{type}}</option>
+                    </select>
+                </td>
+                <td>
+                    <p class="head_text" >工号查询：</p>
+                </td>
+                <td>
+                    <input v-model="query_condition.worker_id" class="ui input" placeholder="输入工号"
+                           :disabled="!(query_condition.group=='')">
+                </td>
+                <td>
+                    <button class="ui tiny blue button" @click="sub_query">查询</button>
+                </td>
+            </tr>
+        </table>
+        <table class="ui celled table" style="margin-bottom: 6em">
+            <tr>
+                <td>工号</td>
+                <td>姓名</td>
+                <td>班组</td>
+                <td>日期</td>
+                <td>班别</td>
+                <td>上班时间</td>
+                <td>安排人</td>
+            </tr>
+            <tr v-if="show_data.worker_id.length==0">
+                <td colspan="7" class="negative">未查询到数据</td>
+            </tr>
+            <tr v-for="i in show_data.worker_id.length">
+                <td>{{show_data.worker_id[i-1]}}</td>
+                <td>{{id_name[show_data.worker_id[i-1]]}}</td>
+                <td>{{id_group[show_data.worker_id[i-1]]}}</td>
+                <td>{{show_data.date[i-1]}}</td>
+                <td>{{show_data.type[i-1]}}</td>
+                <td>{{types[show_data.type[i-1]].start_time.substr(0,5)+'--'+types[show_data.type[i-1]].end_time.substr(0,5)}}</td>
+                <td>{{id_name[show_data.operator_id[i-1]]}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<script src = "../../statics/js/workarrangement_query.js?v=1.0.21"></script>
+</body>

@@ -22,3 +22,5 @@ class LoginHandler(BaseHandler):
                             alert('账户名或密码错误，请重新登录成功');
                             window.location='/login'
                         </script>''')
+    def on_finish(self):
+        pass

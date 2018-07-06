@@ -36,7 +36,9 @@
             <td width="28%">
                 输入名称：
                 <input class="input_diy" style="font-size:1em;" type="text" v-model="wa_type_name" placeholder="班别名称">
-                &emsp;{{wa_type_name==''?'不能为空！！':(name_list.indexOf(wa_type_name)>=0?'名称重复！！':'OK!!!')}}
+                &emsp;<span>
+                    {{wa_type_name==''?'不能为空！！':(name_list.indexOf(wa_type_name)>=0?'名称重复！！':'OK!!!')}}
+                </span>
             </td>
             <td width="21%">
                 开始时间：

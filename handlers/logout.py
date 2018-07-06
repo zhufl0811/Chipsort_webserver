@@ -9,3 +9,5 @@ class LogoutHandler(BaseHandler):
                         alert('注销成功');
                         window.location='/login'
                     </script>''')
+    def on_finish(self):
+        pass

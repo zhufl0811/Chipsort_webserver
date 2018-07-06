@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../statics/css/mystyle.css?v=1.2.34">
+    <link rel="stylesheet" href="../../statics/css/semantic.min.css">
+    <script src="../../statics/js/vue.js"></script>
+    <script src="../../statics/js/jquery.js"></script>
+    <script src = "../../statics/js/main.js?v=1.0.10"></script>
+    <title>加班提报</title>
+</head>
+<body onload=navbar()>
+<div id="all" class="ui container" style="width: 80%;padding-bottom: 6em" >
+    <div>
+        <table width="100%">
+            <tr>
+                <td rowspan="2" width="15%">
+                    <a href="/"><br><img  src="../../statics/pictures/chipsort_logo.png" height='64px' weight='232px'>
+                        </a>
+                </td>
+                <td height="50%" align="center">
+                <h1 class="head_text" style="font-size: 36px;padding-right: 18%;padding-top:22px;">考 勤 系 统</h1></td>
+            </tr>
+            <tr>
+                <td align="right"><span>{{init_get_info.worker_name}}</span>，您好，<a href="/logout">点我注销</a></td>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <div id="navbar" class="navbar" style="width: 100%;left: 0">
+
+    </div>
+    <br>
+    <div style="margin-bottom: 1em">
+        <span class="head_text">日期筛选：</span>
+        <select v-model="date_selected">
+            <option v-for="(unaudited_info_oneday,date) in init_get_info.overtime_unaudited_info">
+                {{date}}
+            </option>
+            <option>所有</option>
+        </select>
+        <span class="head_text" style="margin-left: 2em">组筛选：</span>
+        <select v-model="group_selected">
+            <option v-for="(unaudited_info_onegroup,group) in init_get_info.overtime_unaudited_info[date_selected]">
+                {{group}}
+            </option>
+            <option>所有</option>
+        </select>
+    </div>
+    <div v-if="Object.keys(init_get_info.overtime_unaudited_info).length===0" style="text-align: center">
+        <h2>您没有需要审核的数据</h2>
+    </div>
+    <div v-for="(unaudited_info_oneday,date) in init_get_info.overtime_unaudited_info" style="margin-bottom:2em;border: #0f0f10 solid 1px;border-radius: 1em" v-if="date==date_selected||!date_selected||date_selected=='所有'">
+        <div style="margin-bottom: 1em;margin-top: 1em">
+            <div style="display: inline-block;margin-left: 2em" class="head_text">{{date}}</div>
+            <div style="display: inline-block;margin-top: 0.5em;margin-left: 43em">
+                <button :name="'pass_'+date" class="ui green button" @click="sub_audit_one_day">全天通过</button>
+                <button :name="'no_pass_'+date" class="ui red button" @click="sub_audit_one_day">全天不通过</button>
+            </div>
+        </div>
+        <table class="ui table"  v-for="(unaudited_info_onegroup,group) in unaudited_info_oneday" style="border-radius: 1em"
+               v-if="unaudited_info_onegroup.length?group==group_selected||!group_selected||group_selected=='所有':''">
+            <tr>
+                <td colspan="8" class="head_text">{{group}}</td>
+                <td colspan="2" width="25%">
+                    <button class="ui green small button" @click="sub_audit_one_group" :name="'pass_'+group+'_'+date">本组通过</button>
+                    <button class="ui orange small button" @click="sub_audit_one_group" :name="'no_pass_'+group+'_'+date">本组不通过</button>
+                </td>
+            </tr>
+            <tr>
+                <td>工号</td>
+                <td>姓名</td>
+                <td>排班</td>
+                <td>上班时间</td>
+                <td>加班开始</td>
+                <td>加班结束</td>
+                <td>时数</td>
+                <td>比例</td>
+                <td>提报人</td>
+                <td>操作</td>
+            </tr>
+            <tr v-for="item in unaudited_info_onegroup">
+                <td>{{item[0]}}</td>
+                <td>{{init_get_info.id_name[item[0]]}}</td>
+                <td>{{item[1]}}</td>
+                <td>{{item[2]}}--{{item[3]}}</td>
+                <td>{{item[4]}}</td>
+                <td>{{item[5]}}</td>
+                <td>{{item[7]}}</td>
+                <td>{{item[8]}}</td>
+                <td>{{init_get_info.id_name[item[9]]}}</td>
+                <td>
+                    <button class="ui green tiny button" @click="sub_audit_one_person" :name="'pass_'+item[0]+'_'+date">通过</button>
+                    <button class="ui yellow tiny button" @click="sub_audit_one_person" :name="'no_pass_'+item[0]+'_'+date">不通过</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script src="../../statics/js/overtime_audit.js?v=1.0.30"></script>
+</body>
+</html>

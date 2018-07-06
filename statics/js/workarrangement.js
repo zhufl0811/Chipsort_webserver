@@ -1,207 +1,104 @@
-var greeting = new Vue({
-    el:'#greeting',
-    data:{
-        worker_id:'',
-        worker_name:''
-    },
-    created:function () {
+var all=new Vue({
+  el:'#all',
+  data:{
+      worker_id:'',
+      worker_name:'',
+      group_info:'',
+      group_selected_to_show:'',
+      workarrangement_types:'',
+      sub_info:{
+          'start_date':'',
+          'end_date':'',
+          'wa_info':{}
+      }
+
+  },
+  created:function () {
         this.get_info()
     },
-    methods:{
-        get_info:function () {
-            let mv=this;
+  methods:{
+      get_info:function () {
+          let mv=this;
             $.ajax({
                 url:'/attendance/workarrangement',
                 dataType:'json',
                 type:'get',
                 success:function (data) {
                     mv.worker_id=data.worker_id;
-                    mv.worker_name=data.worker_name
-
+                    mv.worker_name=data.worker_name;
+                    mv.group_info=data.group_info;
+                    mv.group_selected_to_show=mv.group_info[0].group_name;
+                    mv.workarrangement_types=data.workarrangement_types
                 }
                 })
-        }
-    }
-});
-
-var a;
-var getgroup = new Vue({
-    el:'#form_wa',
-    data:{
-        group_info:'',
-        group_selected:''
-    },
-    created:function () {
-        this.get_info()
-    },
-    methods:{
-        get_info:function () {
-            let mv=this;
-            $.ajax({
-                url:'/attendance/workarrangement',
-                dataType:'json',
-                type:'get',
-                success:function (data) {
-                    mv.group_info = data.group_info;
-                    mv.group_selected=data.group_info[0].group_name
-                    }
-                });
+      },
+      easy_operator:function (e) {
+          let mv=this;
+          var tooday=new Date();
+          var thisyear=tooday.getFullYear();
+          var thismonth = tooday.getMonth();
+          if($(e.target).context.textContent==='上月'){
+              var start_date=new Date(thisyear,thismonth-1,1);
+              mv.sub_info.start_date=mv.dateToString(start_date);
+              var end_date=new Date(thisyear,thismonth,0);
+              mv.sub_info.end_date=mv.dateToString(end_date);
+          }else if($(e.target).context.textContent==='本月'){
+              var start_date=new Date(thisyear,thismonth,1);
+              mv.sub_info.start_date=mv.dateToString(start_date);
+              var end_date=new Date(thisyear,thismonth+1,0);
+              mv.sub_info.end_date=mv.dateToString(end_date);
+          }else{
+              var start_date=new Date(thisyear,thismonth+1,1);
+              mv.sub_info.start_date=mv.dateToString(start_date);
+              var end_date=new Date(thisyear,thismonth+2,0);
+              mv.sub_info.end_date=mv.dateToString(end_date);
+          }
+      },
+      dateToString: function(date){
+          var year = date.getFullYear();
+          var month =(date.getMonth() + 1).toString();
+          var day = (date.getDate()).toString();
+          if (month.length === 1) {
+              month = "0" + month;
+          }
+          if (day.length === 1) {
+              day = "0" + day;
+          }
+          var dateTime = year + "-" + month + "-" + day;
+          return dateTime;
         },
-    },
-});
-
-function submit_wa(group_name) {
-    var sub_info={};
-    groups=getgroup.group_info;
-    var start_date = $("input[name='start_date_of_"+group_name+"\']").val();
-    var end_date = $("input[name='end_date_of_"+group_name+"\']").val();
-    if(start_date){
-        if(end_date){
-            if(start_date>end_date){
-                alert('开始日期需要小于结束日期')
-            }else{
-                for(var i=0;i<groups.length;i++) {
-                    if (group_name === groups[i].group_name) {
-                        var sub_group = groups[i].group_members;
+      select_son_group:function (e) {
+          let mv=this;
+          var type=$(e.target).context.textContent.replace(/\s/g,'').slice(2);
+          a=$(e.target).parent().parent().parent().find("input[value=\'"+type+"\']");
+          for(var i=0;i<a.length;i++){
+              $(a[i]).click()
+          }
+      },
+      sub_info_to_server:function () {
+          let mv=this;
+          var sd=this.sub_info.start_date;
+          var ed=this.sub_info.end_date;
+          if(!(sd&&ed)){
+              alert('开始和结束日期均要填写')
+          }else if(new Date(ed.substr(0,4),ed.substr(5,2),ed.substr(8,2))<new Date(sd.substr(0,4),sd.substr(5,2),sd.substr(8,2))){
+              alert('结束日期不得小于开始日期')
+          }else{
+              if(Object.keys(mv.sub_info.wa_info).length<1){
+                  alert('请至少选中一名员工')
+              }else{
+                  $.ajax({
+                    url:'/attendance/workarrangement',
+                    type:'post',
+                    dataType:'JSON',
+                    data:JSON.stringify(mv.sub_info),
+                    success:function(){
+                        mv.sub_info.wa_info={};
+                      alert('ok')
                     }
-                }
-                for(var j=0;j<sub_group.length;j++){
-                    id = sub_group[j].id;
-                    type = $('input[name='+id+']:checked').val();
-                    sub_info[id]=type
-                }
-                if(JSON.stringify(sub_info)==='{}'){
-                    alert('请至少提供一名员工的排班信息')
-                }else{
-                    sub_info['start_date']=start_date;
-                    sub_info['end_date']=end_date;
-                    sub_info=JSON.stringify(sub_info);
-                    $.ajax({
-                        url:'/attendance/workarrangement',
-                        dataType:'json',
-                        type:'post',
-                        data:sub_info,
-                        success: function() {
-                            alert(group_name+' 提交成功');
-                        }
-                    })
-                }
-
-            }
-        }else{
-            alert('请输入**本组**的结束日期')
-        }
-    }else{
-        alert('请输入**本组**的开始日期')
-    }
-
-}
-
-function submit_diy(that) {
-    var diy_group_info={};
-    var ids_divided_into=[];
-    var son_group_name = $(that).parent().prev().find('input');
-    if(son_group_name[0].value){
-        diy_group_info['son_group_name']=son_group_name[0].value
-    }else{
-        alert('请输入分组名称');
-        return
-    };
-    var ids_not_diyed = $(that).parent().prev().prev().find('input:checked');
-    if(ids_not_diyed.length<2){
-        alert('请至少选中两名员工');
-        return
-    }else{
-        for(var i=0;i<ids_not_diyed.length;i++){
-            ids_divided_into.push(ids_not_diyed[i].value)
-        }
-    }
-    diy_group_info['ids_divided_into']=ids_divided_into;
-    diy_group_info=JSON.stringify(diy_group_info);
-    $.ajax({
-        url:'/attendance/workarrangement',
-        dataType:'json',
-        type:'post',
-        data:diy_group_info,
-        success: function() {
-            alert('分组成功');
-            window.location.reload()
-        }
-    })
-}
-
-function select_group(that) {
-    var div_ids_in_this = $(that).parent().parent().find('div');
-    var ids_in_this=[];
-    for(i=0;i<div_ids_in_this.length;i++){
-        ids_in_this.push($.trim(div_ids_in_this[i].textContent))
-    }
-    if($(that).attr('name')==='select_group_1'){
-            for(i in ids_in_this){
-                $("input[type='radio'][name="+ids_in_this[i]+"][value=1]").prop('checked','checked')
-            }
-    }else if($(that).attr('name')==='select_group_2'){
-        for(i in ids_in_this){
-                $("input[type='radio'][name="+ids_in_this[i]+"][value=2]").prop('checked','checked')
-            }
-    }else{
-        for(i in ids_in_this){
-                $("input[type='radio'][name="+ids_in_this[i]+"][value=3]").prop('checked','checked')
-            }
-    }
-}
-
-function delete_group(that) {
-    var group_name=$(that).parents('table').attr('name').slice(0,5);
-    var diy_group_name = $(that).attr('name');
-    var data={};
-    data['group_parent']=group_name;
-    data['group_son'] = diy_group_name;
-    $.ajax({
-        url:'/attendance/workarrangement',
-        dataType:'json',
-        type:'post',
-        data:JSON.stringify(data),
-        success: function() {
-            alert('删除成功');
-            window.location.reload()
-        }
-    })
-}
-
-function dateToString(ddd){
-  var thisyear = ddd.getFullYear();
-  var thismonth =(ddd.getMonth() + 1).toString();
-  var tooday = (ddd.getDate()).toString();
-  if (thismonth.length === 1) {
-      thismonth = "0" + thismonth;
+                  })
+              }
+          }
+      }
   }
-  if (tooday.length === 1) {
-      tooday = "0" + tooday;
-  }
-  var dateTime = thisyear + "-" + thismonth + "-" + tooday;
-  return dateTime;
-}
-
-function shortcut(that) {
-    var tooday = new Date();
-    var thisyear = tooday.getFullYear();
-    var thismonth = tooday.getMonth();
-    if(that.textContent==='上月'){
-        var firstday=dateToString(new Date(thisyear,thismonth-1,1));
-        var lastday=dateToString(new Date(thisyear,thismonth,0));
-        $(that).parents('table').find("input")[0].value=firstday;
-        $(that).parents('table').find("input")[1].value=lastday;
-    }else if(that.textContent==='本月'){
-        var firstday=dateToString(new Date(thisyear,thismonth,1));
-        var lastday=dateToString(new Date(thisyear,thismonth+1,0));
-        $(that).parents('table').find("input")[0].value=firstday;
-        $(that).parents('table').find("input")[1].value=lastday;
-    }else{
-        var firstday=dateToString(new Date(thisyear,thismonth+1,1));
-        var lastday=dateToString(new Date(thisyear,thismonth+2,0));
-        $(that).parents('table').find("input")[0].value=firstday;
-        $(that).parents('table').find("input")[1].value=lastday;
-    }
-
-}
+})

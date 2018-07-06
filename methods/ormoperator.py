@@ -77,26 +77,30 @@ class OrmOperator():
     def delete_some_row(self,**kwargs):#删除多行数据，用法类似add_some_row
         all_keys = list(kwargs.keys())
         dict_list = []
+        before=time.time()
         for i in range(len(kwargs[all_keys[0]])):
             dd = {}
             for j in range(len(all_keys)):
                 dd[all_keys[j]] = kwargs[all_keys[j]][i]
             dict_list.append(dd)
-        conn = self.engine.connect()
-        conn.execute(self.table.__table__.delete(),dict_list)
-        # for dict in dict_list:
-        #     obj=self.session.query(self.table).filter_by(**dict).first()
-        #     if obj:
-        #         self.session.delete(obj)
-        # self.session.commit()
-        # self.session.close()
+        print(time.time()-before)
+        for dict in dict_list:
+            obj=self.session.query(self.table).filter_by(**dict).first()
+            if obj:
+                self.session.delete(obj)
+        self.session.commit()
+        self.session.close()
+        print(time.time()-before)
 
 if __name__=='__main__':
-    from models.attendance import DIYGroupDivide
-    oo_e=OrmOperator(DIYGroupDivide)
-    oo_e.add_row(operator_id='s123',
-                 group_parent='生产|包装',
-                 group_son='A',
-                 ids_in_son='s135,s178,s198')
-
+    from models.attendance import OverTime
+    oo_e=OrmOperator(OverTime)
+    oo_e.add_row(worker_id = 's123',
+    date = '2018-06-03',
+    start_time = '2018-06-03 8:30',
+    end_time = '2018-06-03 12:30',
+    hours = 4,
+    audit_state = 0,
+    submit_id = 's223',
+    audit_id = 's334')
 

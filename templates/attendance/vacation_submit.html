@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../statics/css/mystyle.css?v=1.2.47">
+    <link rel="stylesheet" href="../../statics/css/semantic.min.css">
+    <script src="../../statics/js/vue.js"></script>
+    <script src="../../statics/js/jquery.js"></script>
+    <script src = "../../statics/js/main.js?v=1.0.18"></script>
+    <title>休假提报</title>
+</head>
+<body onload=navbar()>
+<div id="all" class="ui container" style="width: 80%;padding-bottom: 6em" >
+    <div>
+        <table width="100%">
+            <tr>
+                <td rowspan="2" width="15%">
+                    <a href="/"><br><img  src="../../statics/pictures/chipsort_logo.png" height='64px' weight='232px'>
+                        </a>
+                </td>
+                <td height="50%" align="center">
+                <h1 class="head_text" style="font-size: 36px;padding-right: 18%;padding-top:22px;">考 勤 系 统</h1></td>
+            </tr>
+            <tr>
+                <td align="right"><span>{{init_info.id_name[init_info.worker_id]}}</span>，您好，<a href="/logout">点我注销</a></td>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <div id="navbar" class="navbar" style="width: 100%;left: 0">
+
+    </div>
+    <br>
+    <div style="margin-bottom: 1em;display: inline-block;width: 20%">
+        <select v-model="group_selected" class="ui dropdown">
+            <option v-for="group in init_info.groups">{{group}}</option>
+        </select>
+    </div>
+    <div style="display: inline-block;width: 78%">
+        <span>日期：</span>
+        <input v-model="date_type_query_info.start_date" type="date" class="input_small_diy">
+        <span>—</span>
+        <input  type="date" class="input_small_diy"  v-model="date_type_query_info.end_date">
+        <span style="margin-left: 2%">
+            <button class="ui tiny green button" style="padding-bottom:1%;padding-top:1%;padding-left:3%;padding-right:3%" @click="sub_date_type_query_info">
+                选定
+            </button>
+        </span>
+    </div>
+    <div>
+        <table class="ui compact celled table">
+            <tr>
+                <td colspan="2" class="ui positive head_text">所有成员</td>
+            </tr>
+        </table>
+        <div style="display: inline-block;width: 11%;margin-left: 1%;margin-bottom: 1%" v-for="id in init_info.ids_to_operate"
+             v-if="(init_info.id_group[id]==group_selected||group_selected=='全部')&&date_type_query_info.ids.indexOf(id)==-1">
+            {{init_info.id_name[id]}}
+            <span v-if="init_info.id_name[id].length==2">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <button :name="id" style="padding-bottom: 5%;padding-top:5%;padding-left:10%;padding-right:10%"
+                    @click="add_id_to_subinfo" class="ui green tiny button" >
+                添加
+            </button>
+        </div>
+    </div>
+    <div>
+        <table class="ui compact celled table">
+            <tr>
+                <td colspan="2" class="ui positive head_text">选中成员</td>
+            </tr>
+        </table>
+        <div v-for="i in date_type_query_info.ids.length" style="display: inline-block;width: 11%;margin-left: 1%;margin-bottom: 1%">
+            {{init_info.id_name[date_type_query_info.ids[i-1]]}}
+            <span v-if="init_info.id_name[date_type_query_info.ids[i-1]].length==2">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <button class="ui tiny red button" style="padding-bottom:5%;padding-top:5%;padding-left:10%;padding-right:10%"
+                    :name="date_type_query_info.ids[i-1]" @click="remove_id_from_subinfo">
+                删除
+            </button>
+        </div>
+    </div>
+    <table v-for="(date_type_info,id) in date_type_get_info" class="ui compact table" style="font-size: 1em" v-if="JSON.stringify(date_type_info)!=='{}'">
+        <tr>
+            <td colspan="5" class="ui positive cell" style="font-size: 1.4em;font-weight: bold">{{init_info.id_name[id]}}</td>
+            <td colspan="2" class="ui right aligned">
+                种类全选:
+                <select :name="'easy_select_'+id" @change="select_same_vacation_type">
+                    <option v-for="vacation_type in init_info.vacation_types">
+                        {{vacation_type}}
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>日期</td>
+            <td>排班</td>
+            <td>上班开始</td>
+            <td>请假开始</td>
+            <td>请假结束</td>
+            <td>上班结束</td>
+            <td>种类</td>
+        </tr>
+        <tr v-for="(typename,date) in date_type_info">
+            <td>{{date.slice(2)}}</td>
+            <td>{{typename}}</td>
+            <td>{{init_info.work_type_time[typename][0]}}</td>
+            <td>
+                <select v-model="vacation_sub_info[id][date]['start_hour']">
+                    <option v-for="i in 24">{{i-1<10?String('0'+String(i-1)):i-1}}</option>
+                </select>
+                <span>:</span>
+                <select v-model="vacation_sub_info[id][date]['start_min']">
+                    <option>00</option>
+                    <option>10</option>
+                    <option>20</option>
+                    <option>30</option>
+                    <option>40</option>
+                    <option>50</option>
+                </select>
+            </td>
+            <td>
+                <select v-model="vacation_sub_info[id][date]['end_hour']">
+                    <option v-for="i in 24">{{i-1<10?String('0'+String(i-1)):i-1}}</option>
+                </select>
+                <span>:</span>
+                <select v-model="vacation_sub_info[id][date]['end_min']">
+                    <option>00</option>
+                    <option>10</option>
+                    <option>20</option>
+                    <option>30</option>
+                    <option>40</option>
+                    <option>50</option>
+                </select>
+            </td>
+            <td>{{init_info.work_type_time[typename][1]}}</td>
+            <td>
+                <select v-model="vacation_sub_info[id][date]['vacation_type']">
+                    <option v-for="vacation_type in init_info.vacation_types">
+                        {{vacation_type}}
+                    </option>
+                </select>
+            </td>
+        </tr>
+    </table>
+    <table class="ui center aligned table" style="border: 0" v-show="JSON.stringify(date_type_get_info)!='{}'">
+        <tr>
+            <td width="100%" style="margin: 0;padding: 0">
+                <button class="ui green small button" style="margin:0;padding-top: 1%;padding-bottom:  1%" @click="sub_vacation_info">
+                    提交
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>
+<script src="../../statics/js/vacation_submit.js?v=1.0.73"></script>
+</body>
+</html>

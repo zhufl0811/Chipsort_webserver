@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../../statics/css/mystyle.css?v=1.0.10">
+    <link rel="stylesheet" href="../../statics/css/mystyle.css?v=1.2.32">
     <link rel="stylesheet" href="../../statics/css/semantic.min.css">
     <script src="../../statics/js/vue.js"></script>
     <script src="../../statics/js/jquery.js"></script>
@@ -10,133 +10,93 @@
     <title>排班</title>
 </head>
 <body onload=navbar()>
-<div class="top">
-    <table width="100%">
-        <tr>
-            <td rowspan="2" width="15%">
-                <a href="/"><br><img  src="../../statics/pictures/chipsort_logo.png" height='64px' weight='232px'>
-                    </a>
-            </td>
-            <td height="50%" align="center">
-            <h1 class="head_text" style="font-size: 36px;padding-right: 18%;padding-top:22px;">考 勤 系 统</h1></td>
-        </tr>
+<div id="all" class="ui container" style="width: 80%">
+    <div>
+        <table width="100%">
+            <tr>
+                <td rowspan="2" width="15%">
+                    <a href="/"><br><img  src="../../statics/pictures/chipsort_logo.png" height='64px' weight='232px'>
+                        </a>
+                </td>
+                <td height="50%" align="center">
+                <h1 class="head_text" style="font-size: 36px;padding-right: 18%;padding-top:22px;">考 勤 系 统</h1></td>
+            </tr>
 
-        <tr>
-            <td align="right"><span id="greeting">{{ worker_name }}</span>，您好，<a href="/logout">点我注销</a></td>
-        </tr>
-    </table>
-</div>
-<br>
-<div id="navbar" class="navbar">
+            <tr>
+                <td align="right"><span>{{ worker_name }}</span>，您好，<a href="/logout">点我注销</a></td>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <div id="navbar" class="navbar" style="width: 100%;left: 0">
 
-</div>
-<br>
-<div class="ui container" style="width:80%">
-    <div id="form_wa">
-        <select v-model="group_selected" v-if="group_info.length>1" class="ui dropdown">
+    </div>
+    <br>
+    <div>
+        <select v-model="group_selected_to_show" :disabled="group_info.length==1" class="ui dropdown" style="fworkarrangement.htmlont-size: 1.4em;padding: 0.2em">
             <option v-for="group in group_info">{{group.group_name}}</option>
         </select>
-        <div v-for="group in group_info" v-show="group_selected==group.group_name">
-            <table width="100%" :name="group.group_name">
-                <tr v-if="group_info.length==1">
-                    <td colspan="7" >
-                        <h2>{{group.group_name}}</h2>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="5" width="70%"><h3 style="display: inline-block">开始日期：</h3>
-                        <input :name="'start_date_of_'+group.group_name" type="date" />---
-                        <h3 style="display: inline-block">结束日期：</h3>
-                        <input :name="'end_date_of_'+group.group_name" type="date" size="16"/>
-                    <td colspan="2" width="30%" align="center">
-                        <button class="ui tiny blue button" onclick="shortcut(this)">上月</button>
-                        <button class="ui tiny blue button" onclick="shortcut(this)">本月</button>
-                        <button class="ui tiny blue button" onclick="shortcut(this)">下月</button>
-                    </td>
-                </tr>
-                <tr v-for="i in Math.ceil((group.group_members).length/7)">
-                    <td v-for="j in 7" width="14%">
-                        <div class="cal_cell" v-if="(7*i+j-8)<(group.group_members).length" >
-                            <div class="cal_left_cell">
-                                    {{group.group_members[7*i+j-8].id}}
-                                    <br>
-                                    {{group.group_members[7*i+j-8].name}}
-                            </div>
-                            <div class="cal_right_cell">
-                                <div style="margin-top: 10%;margin-bottom: 10%">
-                                    <input type="radio" :name='group.group_members[7*i+j-8].id' value="1" :id="group.group_members[7*i+j-8].id+'_radio_1'" class = 'ui radio'>
-                                    <label :for="group.group_members[7*i+j-8].id+'_radio_1'">早班1</label>
-                                </div>
-                                <div style="margin-top: 10%;margin-bottom: 10%">
-                                    <input type="radio" :name='group.group_members[7*i+j-8].id' value="2" :id="group.group_members[7*i+j-8].id+'_radio_2'" class = 'ui radio'>
-                                    <label :for="group.group_members[7*i+j-8].id+'_radio_2'">早班<br></label>
-                                </div>
-                                <div style="margin-top: 10%;margin-bottom: 10%">
-                                    <input type="radio" :name='group.group_members[7*i+j-8].id' value="3" :id="group.group_members[7*i+j-8].id+'_radio_3'" class = 'ui radio>'>
-                                    <label :for="group.group_members[7*i+j-8].id+'_radio_3'">晚班<br></label>
-                                </div>
+    </div>
+    <br>
+    <div v-for="group in group_info" v-if="group_selected_to_show==group.group_name">
+        <table class="ui table" style="width: 100%">
+            <tr>
+                <td><h3 style="display: inline-block">开始日期：</h3>
+                    <input v-model="sub_info.start_date" type="date" />
+                <td>
+                    <h3 style="display: inline-block">结束日期：</h3>
+                    <input v-model="sub_info.end_date" type="date" size="16"/>
+                </td>
+                <td width="30%" align="center">
+                    <button class="ui tiny blue button" v-on:click="easy_operator">上月</button>
+                    <button class="ui tiny blue button" v-on:click="easy_operator">本月</button>
+                    <button class="ui tiny blue button" v-on:click="easy_operator">下月</button>
+                </td>
+            </tr>
+        </table>
+        <table v-for="key in Object.keys(group.diy_info)" class="ui celled table" v-if="group.diy_info[key].length" width="100%">
+            <tr>
+                <td class="head_text positive" colspan="7" >上次分组：{{key=='ids_not_diyed'?'未分组':key}}</td>
+            </tr>
+            <tr v-for="j in Math.ceil(group.diy_info[key].length/7)">
+                <td v-for="h in 7" width="14%" v-if="7*j+h-8<group.diy_info[key].length">
+                    <div class="cal_cell">
+                        <div class="cal_left_cell" style="vertical-align: top">
+                            {{group.diy_info[key][7*j+h-8]}}<br>
+                            {{group.group_members[group.diy_info[key][7*j+h-8]]}}
+                        </div>
+                        <div class="cal_right_cell">
+                            <div v-for="type in workarrangement_types">
+                                <input type="radio" class="ui radio" :id="group.diy_info[key][7*j+h-8]+'-'+type" :value="type"
+                                       :name="group.diy_info[key][7*j+h-8]" v-model="sub_info.wa_info[group.diy_info[key][7*j+h-8]]">
+                                <label :for="group.diy_info[key][7*j+h-8]+'-'+type">{{type}}</label>
                             </div>
                         </div>
-                    </td>
-                </tr>
-
-            </table>
-            <br>
-            <table width="100%" :name="group.group_name+'_diy_group_son'">
-                <tr><td rowspan="6" style="width: 5%;text-align: center"><h2>自助分组</h2></td></tr>
-                <tr><td></td>
-                    <td width="5%">未分组成员:</td>
-                    <td colspan="3">
-                        <div v-for="id in group.diy_info.ids_not_diyed" style="display: inline-block">
-                        <input type="checkbox" :value="id" :id="id+'_diy'" >
-                        <label :for="id+'_diy'" >{{id}}&emsp;</label>
-                        </div>
-                    </td>
-                    <td width="7%"><input style="width:100%" type="text" placeholder="输入名称"></td>
-                    <td width="4%">
-                        <button onclick="submit_diy(this)" :title="'请至少选中两名员工'" class="ui green tiny button" name="newdiy" style="margin: 0;padding: 5px">
-                            新建分组
-                        </button>
-                    </td>
-                </tr>
-                <tr v-for="son_group in group.diy_info.diy_group_info"><td></td>
-                    <td>
-                        {{son_group.son_group_name}}:
-                    </td>
-                    <td>
-                        <div v-for="id in son_group.ids_in_son.split(',')" style="display: inline-block">
-                            &ensp;&ensp;{{id}}&ensp;
-                        </div>
-                    </td>
-                    <td width="7%">
-                        <button name='select_group_1' onclick="select_group(this)" class="ui blue tiny button" style="margin: 0;padding: 5px">
-                            全部早班1
-                        </button>
-                    </td>
-                    <td width="7%">
-                        <button name='select_group_2' onclick="select_group(this)" class="ui blue tiny button" style="margin: 0;padding: 5px">
-                            全部早班
-                        </button>
-                    </td>
-                    <td width="7%">
-                        <button name='select_group_3' onclick="select_group(this)" class="ui blue tiny button" style="margin: 0;padding: 5px">
-                            全部晚班
-                        </button>
-                    </td>
-                    <td width="7%">
-                        <button onclick="delete_group(this)" :name="'del_'+son_group.son_group_name" class="ui red tiny button" style="margin: 0;padding: 5px">
-                            删除分组
-                        </button>
-                    </td>
-                </tr>
-            </table>
-            <div style="margin-bottom: 60px" align="center">
-            <button :name="group.group_name" class="ui green button" onclick="submit_wa(this.name)">
-            提交本组排班
-            </button>
-            </div>
+                    </div>
+                </td>
+                <td width="14%" v-if="j==Math.ceil(group.diy_info[key].length/7)" v-for="k in (group.diy_info[key].length%7==0?0:(7-group.diy_info[key].length%7))">
+                    <br>
+                </td>
+            </tr>
+            <tr>
+                <td width="14%" class="head_text">
+                    快捷操作
+                </td>
+                <td colspan="6">
+                    <button v-for="type in workarrangement_types" class="ui blue button" @click="select_son_group">
+                        全部{{type}}
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <div style="margin-bottom: 5em;text-align: center">
+            <button class="ui large green button" @click="sub_info_to_server">提交本组排班</button>
         </div>
     </div>
+
 </div>
-<script src="../../statics/js/workarrangement.js?v=1.2.32"></script>
+</div>
+
+</body>
+<script src="../../statics/js/workarrangement.js?v=1.3.4"></script>
 </html>

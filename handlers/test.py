@@ -1,6 +1,2 @@
-a={'worker_id': 's480', 'worker_name': '陈昌娥',
-   'group_info': [{'group_name': '生产|包装', 'group_members': [{'id': 's480', 'name': '陈昌娥'}, {'id': 's507', 'name': '张琴'}, {'id': 'S510', 'name': '谢六秀'}, {'id': 's524', 'name': '张玉肖'}, {'id': 's533', 'name': '欧梅平'}, {'id': 's543', 'name': '陈丹丹'}, {'id': 's544', 'name': '曹小鸽'}, {'id': 's600', 'name': '周方晓'}, {'id': 's612', 'name': '肖文'}, {'id': 's613', 'name': '吕泽'}, {'id': 's614', 'name': '文惠'}, {'id': 'S619', 'name': '李成'}, {'id': 'S620', 'name': '陈红'}, {'id': 's621', 'name': '陈圆圆'}, {'id': 's623', 'name': '范锡丽'}, {'id': 's626', 'name': '邱海香'}, {'id': 's629', 'name': '黄炎玉'}, {'id': 's635', 'name': '黄康木'}, {'id': 's636', 'name': '夏金发'}, {'id': 's702', 'name': '测试2'}],
-                   'diy_info': {'A组': 's600,s533,s629,s621,s613,s507,s623,s636,S510,s626',
-                                'B组': 's544,s543,s635,S620,s612,s524,s480,s702,S619,s614',
-                                'ids_not_diyed': []}}]}
-
+from ..methods.psd_to_md5 import psd_to_md5
+print(psd_to_md5('abc'))

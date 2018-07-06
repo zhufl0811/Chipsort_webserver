@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../statics/css/mystyle.css?v=1.2.34">
+    <link rel="stylesheet" href="../../statics/css/semantic.min.css">
+    <script src="../../statics/js/vue.js"></script>
+    <script src="../../statics/js/jquery.js"></script>
+    <script src = "../../statics/js/main.js?v=1.0.3"></script>
+    <title>加班提报</title>
+</head>
+<body onload=navbar()>
+<div id="all" class="ui container" style="width: 80%;padding-bottom: 6em" >
+    <div>
+        <table width="100%">
+            <tr>
+                <td rowspan="2" width="15%">
+                    <a href="/"><br><img  src="../../statics/pictures/chipsort_logo.png" height='64px' weight='232px'>
+                        </a>
+                </td>
+                <td height="50%" align="center">
+                <h1 class="head_text" style="font-size: 36px;padding-right: 18%;padding-top:22px;">考 勤 系 统</h1></td>
+            </tr>
+            <tr>
+                <td align="right"><span>{{ init_get_info.worker_name }}</span>，您好，<a href="/logout">点我注销</a></td>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <div id="navbar" class="navbar" style="width: 100%;left: 0">
+
+    </div>
+    <br>
+    <table class="ui table" style="margin-bottom: 2em">
+        <tr>
+            <td>
+                <select v-model="query_info.group_selected" class="ui dropdown">
+                    <option v-for="son in init_get_info.group">{{son}}</option>
+                </select>
+            </td>
+            <td>
+                日期：<input v-model="query_info.date" type="date" :max="tooday">
+            </td>
+            <td>
+                <button class="ui green button" @click="sub_query">确定</button>
+            </td>
+            <td>
+                <button class="ui green button" @click="easy_query">选定今天</button>
+                <button class="ui green button" @click="easy_query">选定昨天</button>
+                <button class="ui green button" @click="easy_query">选定前天</button>
+            </td>
+        </tr>
+    </table>
+    <div v-for="name in Object.keys(group_type_info)" class="ui container">
+        <div v-for="type in Object.keys(group_type_info[name])" v-show="group_type_info[name][type].length!=0"
+             style="margin-bottom: 2em;border: #000 solid 1px;padding: 0.5em;border-radius: 0.5em">
+            <div style="border-bottom: #000 dashed 1px;">
+                <div style="display:inline-block;width: 18%;margin-bottom: 0.5em" class="head_text">
+                    {{Object.keys(group_type_info).length!=1?name+'_'+type:type}}
+                </div>
+                <div style="display: inline-block;width: 20%">
+                    <span>开始时间:</span>
+                    <select v-model="overtime_sub_info[name+'_'+type]['start_time_hour']">
+                        <option v-for="i in 24">{{i-1<10?String('0'+String(i-1)):i-1}}</option>
+                    </select>
+                    <span>:</span>
+                    <select v-model="overtime_sub_info[name+'_'+type]['start_time_min']">
+                        <option>00</option>
+                        <option>30</option>
+                    </select>
+                </div>
+                <div style="display: inline-block;width: 20%">
+                    <span>结束时间:</span>
+                    <select v-model="overtime_sub_info[name+'_'+type]['end_time_hour']">
+                        <option v-for="i in 24">{{i-1<10?String('0'+String(i-1)):i-1}}</option>
+                    </select>
+                    <span>:</span>
+                    <select v-model="overtime_sub_info[name+'_'+type]['end_time_min']">
+                        <option>00</option>
+                        <option>30</option>
+                    </select>
+                </div>
+                <div style="display: inline-block;width: 24%">
+                    <input type="radio" value="kind1" :id="name+'_'+type+'_kind1'" :name="name+'_'+type+'_kind'" v-model="overtime_sub_info[name+'_'+type]['kind']">
+                    <label :for="name+'_'+type+'_kind1'">kind1</label>
+                    <input type="radio" value="kind2" :id="name+'_'+type+'_kind2'" :name="name+'_'+type+'_kind'" v-model="overtime_sub_info[name+'_'+type]['kind']">
+                    <label :for="name+'_'+type+'_kind2'">kind2</label>
+                    <input type="radio" value="kind3" :id="name+'_'+type+'_kind3'" :name="name+'_'+type+'_kind'" v-model="overtime_sub_info[name+'_'+type]['kind']">
+                    <label :for="name+'_'+type+'_kind3'">kind3</label>
+                </div>
+                <div style="display: inline-block;width: 15%;">
+                    <button @click="select_group_type" :name="name+'_'+type" class="ui blue button" style="padding: 0.4em">
+                        全选本组
+                    </button>
+                    <button @click="sub_overtime_info" :name="name+'_'+type" class="ui green button" style="padding: 0.4em">
+                        提交本组
+                    </button>
+                </div>
+            </div>
+            <div>
+                <div style="display: inline-block;width: 10%;margin-bottom: 0.2em;margin-top: 0.2em" v-for="i in group_type_info[name][type].length">
+                    <input type="checkbox" :value="group_type_info[name][type][i-1]" :id="group_type_info[name][type][i-1]" v-model="overtime_sub_info[name+'_'+type]['ids']" class="ui radio">
+                    <label :for="group_type_info[name][type][i-1]">{{group_type_info[name][type][i-1]}}<br>&ensp;{{init_get_info.id_name[group_type_info[name][type][i-1]]}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="ui table">
+        <tr><td colspan="11">未审核</td></tr>
+        <tr>
+            <td>工号</td>
+            <td>姓名</td>
+            <td>排班</td>
+            <td>上班时间</td>
+            <td>加班开始</td>
+            <td>加班结束</td>
+            <td>时数</td>
+            <td>比例</td>
+            <td>提报人</td>
+            <td>审核人</td>
+            <td>状态</td>
+        </tr>
+        <tr v-for="i in overtime_query_info.unaudited.length">
+            <td>{{overtime_query_info.unaudited[i-1][0]}}</td>
+            <td>{{init_get_info.id_name[overtime_query_info.unaudited[i-1][0]]}}</td>
+            <td>{{overtime_query_info.unaudited[i-1][1]}}</td>
+            <td>{{overtime_query_info.unaudited[i-1][2]}}-{{overtime_query_info.unaudited[i-1][3]}}</td>
+            <td>{{overtime_query_info.unaudited[i-1][4]}}</td>
+            <td>{{overtime_query_info.unaudited[i-1][5]}}</td>
+            <td>{{overtime_query_info.unaudited[i-1][6]}}</td>
+            <td>{{overtime_query_info.unaudited[i-1][7]}}</td>
+            <td>{{init_get_info.id_name[overtime_query_info.unaudited[i-1][8]]}}</td>
+            <td>{{overtime_query_info.unaudited[i-1][9]}}</td>
+            <td>{{overtime_query_info.unaudited[i-1][10]}}</td>
+        </tr>
+    </table>
+</div>
+<script src="../../statics/js/overtime_submit.js?v=1.0.74"></script>
+</body>
+</html>

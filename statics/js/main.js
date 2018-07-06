@@ -34,6 +34,13 @@ url_to_name['addper']='添加权限';
 url_to_name['editper']='修改权限';
 url_to_name['delper']='删除权限';
 url_to_name['workarrangement_type.html']='设定班表';
+url_to_name['workarrangement_query.html']='排班查询';
+url_to_name['overtime_submit.html']='加班申报';
+url_to_name['overtime_audit.html']='加班审核';
+url_to_name['overtime_query.html']='加班查询';
+url_to_name['vacation_query.html']='休假查询';
+url_to_name['vacation_submit.html']='休假提报';
+url_to_name['vacation_audit.html']='休假审核';
 
 function navbar() {
     var navdiv = document.getElementById('navbar');

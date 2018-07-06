@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../statics/css/mystyle.css?v=1.2.34">
+    <link rel="stylesheet" href="../../statics/css/semantic.min.css">
+    <script src="../../statics/js/vue.js"></script>
+    <script src="../../statics/js/jquery.js"></script>
+    <script src = "../../statics/js/main.js?v=1.0.11"></script>
+    <title>加班查询</title>
+</head>
+<body onload=navbar()>
+<div id="all" class="ui container" style="width: 80%;padding-bottom: 6em" >
+    <div>
+        <table width="100%">
+            <tr>
+                <td rowspan="2" width="15%">
+                    <a href="/"><br><img  src="../../statics/pictures/chipsort_logo.png" height='64px' weight='232px'>
+                        </a>
+                </td>
+                <td height="50%" align="center">
+                <h1 class="head_text" style="font-size: 36px;padding-right: 18%;padding-top:22px;">考 勤 系 统</h1></td>
+            </tr>
+            <tr>
+                <td align="right"><span>{{init_info.id_name[init_info.worker_id]}}</span>，您好，<a href="/logout">点我注销</a></td>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <div id="navbar" class="navbar" style="width: 100%;left: 0">
+
+    </div>
+    <br>
+    <div>
+        <span>开始日期：</span>
+        <input type="date" v-model="query_condition.start_date">
+        <span>结束日期：</span>
+        <input type="date" v-model="query_condition.end_date">
+        <button @click="sub_query" class="ui green button">查询</button>
+    </div>
+    <div>
+        <table class="ui celled table">
+            <tr>
+                <td>
+                    <span >组别：</span>
+                    <select v-model="filter_condition.group_selected" :disabled="filter_condition.name_selected!='全部'&&filter_condition.name_selected!=''">
+                        <option v-for="group in info_for_filter.groups">{{group}}</option>
+                    </select>
+                </td>
+                <td>
+                    <span>姓名：</span>
+                    <select v-model="filter_condition.name_selected" :disabled="filter_condition.group_selected!=''&&filter_condition.group_selected!='全部'">
+                        <option v-for="name in info_for_filter.names">{{name}}</option>
+                    </select>
+                </td>
+                <td>
+                    <span>比例：</span>
+                    <select v-model="filter_condition.ratio_selected">
+                        <option v-for="ratio in info_for_filter.ratios">{{ratio}}</option>
+                    </select>
+                </td>
+                <td>
+                    <span>状态：</span>
+                    <select v-model="filter_condition.state_selected">
+                        <option v-for="state in info_for_filter.states">{{state}}</option>
+                    </select>
+                </td>
+                <td>
+                    <span>申报人：</span>
+                    <select v-model="filter_condition.submit_id_selected">
+                        <option v-for="submit_id in info_for_filter.submit_ids">{{submit_id}}</option>
+                    </select>
+                </td>
+                <td>
+                    <span>审核人：</span>
+                    <select v-model="filter_condition.audit_id_selected">
+                        <option v-for="audit_id in info_for_filter.audit_ids">{{audit_id}}</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <table class="ui table" style="text-align: center;position: sticky;top:0;margin-bottom: 0">
+        <tr style="font-weight: bold;">
+            <td width="8.3%">日期</td>
+            <td width="5.4%">工号</td>
+            <td width="6.6%">姓名</td>
+            <td width="8.5%">组别</td>
+            <td width="5.1%">排班</td>
+            <td width="10.8%">上班时间</td>
+            <td width="12.3%">加班开始</td>
+            <td width="12.4%">加班结束</td>
+            <td width="5.1%">时数</td>
+            <td width="5.2%">比例</td>
+            <td width="6.7%">申报人</td>
+            <td width="6.7%">状态</td>
+            <td>审核人</td>
+        </tr>
+    </table>
+    <table class="ui table" style="margin-top: 0">
+        <tr v-for="info in return_info"
+            v-show="(info[3]==filter_condition.group_selected||filter_condition.group_selected==''||filter_condition.group_selected=='全部')&&
+            (info[2]==filter_condition.name_selected||filter_condition.name_selected==''||filter_condition.name_selected=='全部')&&
+            (info[10]==filter_condition.ratio_selected||filter_condition.ratio_selected==''||filter_condition.ratio_selected=='全部')&&
+            (info[11]==filter_condition.submit_id_selected||filter_condition.submit_id_selected==''||filter_condition.submit_id_selected=='全部')&&
+            (info[12]==filter_condition.state_selected||filter_condition.state_selected==''||filter_condition.state_selected=='全部')&&
+            (info[13]==filter_condition.audit_id_selected||filter_condition.audit_id_selected==''||filter_condition.audit_id_selected=='全部')">
+            <td width="8.3%">{{info[0]}}</td>
+            <td width="5.4%">{{info[1]}}</td>
+            <td width="6.6%">{{info[2]}}</td>
+            <td width="8.5%">{{info[3]}}</td>
+            <td width="5.1%">{{info[4]}}</td>
+            <td width="10.8%">{{info[5]+'--'+info[6]}}</td>
+            <td width="12.3%">{{info[7]}}</td>
+            <td width="12.4%">{{info[8]}}</td>
+            <td width="5.1%">{{info[9]}}</td>
+            <td width="5.2%">{{info[10]}}</td>
+            <td width="6.7%">{{info[11]}}</td>
+            <td width="6.7%">{{info[12]}}</td>
+            <td>{{info[13]}}</td>
+        </tr>
+    </table>
+</div>
+<script src="../../statics/js/overtime_query.js?v=1.0.5"></script>
+</body>
+</html>
